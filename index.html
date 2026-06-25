@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ভূমি অধিগ্রহণ শাখা — কর্মবণ্টন ব্যবস্থাপনা</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1a2744;--navy2:#243561;--navy3:#111b30;--green:#2d7d46;--gl:#e8f5ed;--gold:#c8902a;--gol:#fdf4e7;--bg:#f4f6fb;--card:#fff;--bdr:#d4daea;--tx:#1e2c3a;--mu:#5a6a7e;--red:#c0392b;--rdl:#fdf0ef;--pur:#6b4c9a;--sh:0 2px 12px rgba(26,39,68,.10);--shl:0 8px 32px rgba(26,39,68,.14)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Hind Siliguri',Arial,sans-serif;background:var(--bg);color:var(--tx);font-size:15px;line-height:1.6}
+/* HEADER */
+.hdr{background:linear-gradient(135deg,var(--navy3),var(--navy) 60%,#1e3a5f);position:sticky;top:0;z-index:200;box-shadow:0 3px 16px rgba(0,0,0,.25)}
+.hdr-top{display:flex;align-items:center;gap:14px;padding:11px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
+.hdr-emb{width:44px;height:44px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;box-shadow:0 2px 8px rgba(200,144,42,.4)}
+.hdr-t h1{color:#fff;font-size:16px;font-weight:700}
+.hdr-t p{color:rgba(255,255,255,.55);font-size:12px}
+.hdr-srch{padding:8px 20px 11px}
+.sw{position:relative;max-width:720px;margin:0 auto}
+.sw input{width:100%;padding:11px 84px 11px 16px;border-radius:10px;border:2px solid rgba(255,255,255,.15);background:rgba(255,255,255,.10);color:#fff;font-family:inherit;font-size:15px;outline:none;transition:all .2s}
+.sw input::placeholder{color:rgba(255,255,255,.4)}
+.sw input:focus{background:rgba(255,255,255,.18);border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,144,42,.2)}
+.sw-icon{position:absolute;right:50px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.45);font-size:18px;pointer-events:none}
+.sw-clr{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.7);background:rgba(255,255,255,.15);border:none;cursor:pointer;font-size:14px;padding:3px 8px;border-radius:6px;display:none}
+.sh{text-align:center;color:rgba(255,255,255,.35);font-size:11.5px;margin-top:5px}
+/* TABS */
+.tabs{background:var(--navy);display:flex;padding:0 16px;gap:2px;overflow-x:auto}
+.tabs::-webkit-scrollbar{height:3px}
+.tabs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2);border-radius:2px}
+.tbtn{padding:9px 16px;background:none;border:none;border-bottom:3px solid transparent;color:rgba(255,255,255,.5);font-family:inherit;font-size:13.5px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
+.tbtn:hover{color:rgba(255,255,255,.85)}
+.tbtn.act{color:var(--gold);border-bottom-color:var(--gold)}
+/* MAIN */
+.main{max-width:1100px;margin:0 auto;padding:18px 14px 60px}
+/* SEARCH RESULTS */
+#sr{display:none;margin-bottom:22px}
+.srh{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.srt{font-size:12px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px}
+.src{background:var(--navy);color:#fff;font-size:12px;font-weight:700;padding:2px 10px;border-radius:20px}
+.rc{background:var(--card);border-radius:11px;border:1.5px solid var(--bdr);margin-bottom:9px;overflow:hidden;box-shadow:var(--sh);transition:box-shadow .2s,border-color .2s}
+.rc:hover{box-shadow:var(--shl);border-color:var(--navy)}
+.rch{display:flex;align-items:center;gap:8px;padding:10px 14px;background:linear-gradient(90deg,var(--navy),var(--navy2))}
+.rct{background:var(--gold);color:#fff;font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.rcn{color:#fff;font-size:14px;font-weight:700;flex:1;word-break:break-all}
+.rcm{color:rgba(255,255,255,.5);font-size:11px;white-space:nowrap;flex-shrink:0}
+.rcb{padding:12px 14px}
+.rcc{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.rcp{background:var(--bg);border-radius:8px;padding:5px 10px;border:1px solid var(--bdr)}
+.rcpr{font-size:10px;color:var(--mu);font-weight:700;text-transform:uppercase}
+.rcpn{font-size:13.5px;font-weight:700}
+.rca{color:var(--bdr);font-size:18px}
+.ph-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px}
+.pbtn{display:inline-flex;align-items:center;gap:5px;color:#fff;text-decoration:none;padding:5px 12px;border-radius:7px;font-size:13px;font-weight:600;transition:background .15s}
+.pbtn.g{background:var(--green)}.pbtn.g:hover{background:#246038}
+.pbtn.p{background:var(--pur)}.pbtn.p:hover{background:#5a3a82}
+.pbtn.n{background:var(--navy)}.pbtn.n:hover{background:var(--navy3)}
+.dr{display:flex;gap:12px;flex-wrap:wrap;margin-top:7px;padding-top:7px;border-top:1px solid var(--bdr);font-size:12px;color:var(--mu)}
+.synced-case{background:var(--gl);border:1px solid var(--green);border-radius:8px;padding:8px 12px;margin-top:8px}
+.synced-case .stitle{font-size:12.5px;font-weight:700;color:var(--green);margin-bottom:3px}
+.synced-case .srow{font-size:12px;color:var(--tx);display:flex;gap:12px;flex-wrap:wrap}
+.sbadge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700}
+.sbg{background:var(--gl);color:var(--green)}
+.sbp{background:#fff3cd;color:#856404}
+.sbs{background:var(--rdl);color:var(--red)}
+.sbn{background:#e8eaf6;color:#3949ab}
+mark{background:#fff176;color:var(--navy3);border-radius:2px;padding:0 1px}
+/* SECTION */
+.slbl{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.8px;margin:24px 0 11px;display:flex;align-items:center;gap:8px}
+.slbl::after{content:'';flex:1;height:1px;background:var(--bdr)}
+.slbl-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:11px}
+/* STAFF GRID */
+.sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:11px;margin-bottom:6px}
+.sc{background:var(--card);border-radius:11px;border:1.5px solid var(--bdr);padding:13px 15px;box-shadow:var(--sh);transition:box-shadow .2s,transform .15s;position:relative}
+.sc:hover{box-shadow:var(--shl);transform:translateY(-2px)}
+.sct{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px}
+.av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex-shrink:0;color:#fff}
+.av-k{background:linear-gradient(135deg,#1a2744,#2d5a9c)}
+.av-s{background:linear-gradient(135deg,#2d7d46,#4aab65)}
+.av-o{background:linear-gradient(135deg,#7b3f9e,#a65cc8)}
+.av-c{background:linear-gradient(135deg,#c8902a,#e8b060)}
+.sn{font-size:13.5px;font-weight:700;line-height:1.3}
+.sr2{display:inline-block;margin-top:3px;font-size:10.5px;font-weight:700;padding:1px 8px;border-radius:12px;text-transform:uppercase}
+.r-k{background:#dde6f8;color:#1a2744}.r-s{background:var(--gl);color:var(--green)}.r-o{background:#f0e6fa;color:#7b3f9e}.r-c{background:var(--gol);color:var(--gold)}
+.sm{margin-top:8px;display:flex;flex-direction:column;gap:4px}
+.sp{display:inline-flex;align-items:center;gap:5px;color:var(--green);text-decoration:none;font-size:13px;font-weight:600}
+.sp:hover{text-decoration:underline}
+.sj{font-size:11.5px;color:var(--mu)}
+.sbk{margin-top:6px;font-size:11.5px;color:var(--mu);padding-top:6px;border-top:1px dashed var(--bdr)}
+.sbk strong{color:var(--tx)}
+.s-acts{position:absolute;top:10px;right:10px;display:flex;gap:4px}
+.s-act{background:none;border:1px solid var(--bdr);border-radius:6px;padding:2px 7px;font-size:11px;color:var(--mu);cursor:pointer;transition:all .15s}
+.s-act:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+.s-act.del:hover{background:var(--rdl);color:var(--red);border-color:var(--red)}
+/* ASSIGNMENTS */
+.ab{background:var(--card);border-radius:11px;border:1.5px solid var(--bdr);margin-bottom:10px;overflow:hidden;box-shadow:var(--sh)}
+.abh{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--bg);border-bottom:1px solid var(--bdr);cursor:pointer;user-select:none;transition:background .15s}
+.abh:hover{background:#eaecf5}
+.abhn{flex:1}
+.abp{font-size:14px;font-weight:700;color:var(--navy)}
+.abs2{font-size:12px;color:var(--mu);margin-top:1px}
+.ab-acts{display:flex;gap:5px}
+.ab-act{background:none;border:1px solid var(--bdr);border-radius:6px;padding:3px 9px;font-size:11.5px;color:var(--mu);cursor:pointer;transition:all .15s;font-family:inherit}
+.ab-act:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+.ab-act.del:hover{background:var(--rdl);color:var(--red);border-color:var(--red)}
+.abtg{font-size:18px;color:var(--mu);transition:transform .2s;width:22px;text-align:center}
+.abtg.op{transform:rotate(180deg)}
+.abb{display:none;padding:13px 14px}
+.abb.op{display:block}
+.lg{margin-bottom:11px}
+.ll{font-size:11px;font-weight:700;color:#fff;padding:2px 10px;border-radius:12px;display:inline-block;margin-bottom:6px}
+.ll48{background:var(--gold)}.ll82{background:var(--pur)}.ll17{background:var(--green)}.llmz{background:var(--mu)}
+.cts{display:flex;flex-wrap:wrap;gap:4px}
+.ct{background:var(--bg);border:1px solid var(--bdr);border-radius:6px;padding:2px 8px;font-size:12px;cursor:default;transition:background .15s}
+.ct:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+/* CASE TABLE */
+.cfb{display:flex;gap:7px;margin-bottom:13px;flex-wrap:wrap}
+.fbtn{padding:5px 14px;border-radius:20px;border:1.5px solid var(--bdr);background:var(--card);color:var(--mu);font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:all .15s}
+.fbtn:hover,.fbtn.act{background:var(--navy);border-color:var(--navy);color:#fff}
+.tw{overflow-x:auto;border-radius:11px;box-shadow:var(--sh)}
+table{width:100%;border-collapse:collapse;background:var(--card);font-size:13px}
+thead tr{background:var(--navy);color:#fff}
+thead th{padding:10px 12px;text-align:left;font-size:12px;font-weight:700;white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--bdr);transition:background .12s}
+tbody tr:hover{background:#f0f4fb}
+tbody tr:last-child{border-bottom:none}
+tbody td{padding:9px 12px;vertical-align:top;line-height:1.5}
+.cnc{font-weight:700;color:var(--navy);white-space:nowrap}
+.cbw{min-width:70px}
+.cbb{background:#e5e9f2;border-radius:4px;height:5px;margin-top:3px;overflow:hidden}
+.cbf{height:100%;border-radius:4px;background:var(--green)}
+/* FORMS / MODALS */
+.fc{background:var(--card);border-radius:12px;border:1.5px solid var(--bdr);padding:18px;box-shadow:var(--sh);margin-bottom:18px}
+.ft{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:11px;margin-bottom:13px}
+.fg label{display:block;font-size:11.5px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.fg input,.fg select,.fg textarea{width:100%;padding:8px 11px;border-radius:8px;border:1.5px solid var(--bdr);font-family:inherit;font-size:14px;color:var(--tx);background:var(--bg);outline:none;transition:border-color .2s,box-shadow .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,39,68,.08);background:#fff}
+.fg textarea{resize:vertical;min-height:80px}
+.bg{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:none;padding:9px 18px;border-radius:8px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s;display:inline-flex;align-items:center;gap:6px}
+.btn-g{background:var(--green);color:#fff}.btn-g:hover{background:#246038}
+.btn-n{background:var(--navy);color:#fff}.btn-n:hover{background:var(--navy3)}
+.btn-r{background:var(--red);color:#fff}.btn-r:hover{background:#a93226}
+.btn-s{background:var(--bg);color:var(--mu);border:1.5px solid var(--bdr)}.btn-s:hover{border-color:var(--mu);color:var(--tx)}
+/* MODAL */
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300;display:none;align-items:center;justify-content:center;padding:16px}
+.mo.op{display:flex}
+.md{background:var(--card);border-radius:14px;max-width:620px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.mdh{display:flex;align-items:center;justify-content:space-between;padding:15px 20px;border-bottom:1px solid var(--bdr);position:sticky;top:0;background:var(--card);z-index:1}
+.mdt{font-size:16px;font-weight:700;color:var(--navy)}
+.mdc{background:none;border:none;font-size:22px;cursor:pointer;color:var(--mu);padding:2px 8px;border-radius:6px;transition:background .15s}
+.mdc:hover{background:var(--bg)}
+.mdb{padding:20px}
+/* REASSIGN LOG */
+.log-item{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;background:var(--bg);border-radius:8px;border:1px solid var(--bdr);margin-bottom:6px;font-size:13px}
+.log-del{color:var(--red);background:none;border:none;cursor:pointer;font-size:16px;padding:2px 6px;border-radius:5px;flex-shrink:0}
+.log-del:hover{background:var(--rdl)}
+/* TOAST */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--navy);color:#fff;padding:11px 18px;border-radius:10px;font-size:14px;font-weight:600;box-shadow:var(--shl);transform:translateY(80px);opacity:0;transition:all .3s;z-index:999;max-width:320px}
+.toast.show{transform:translateY(0);opacity:1}
+.es{text-align:center;padding:36px 20px;color:var(--mu)}
+.es .ic{font-size:36px;margin-bottom:10px}
+@media(max-width:600px){
+  .hdr-top{padding:9px 12px}.hdr-srch{padding:7px 12px 10px}.tabs{padding:0 8px}
+  .main{padding:12px 9px 48px}.sg{grid-template-columns:1fr}.fg{grid-template-columns:1fr}
+  .rcc{gap:4px}.ab-acts{display:none}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-top">
+    <div class="hdr-emb">🏛️</div>
+    <div class="hdr-t"><h1>ভূমি অধিগ্রহণ শাখা — কর্মবণ্টন ও অনুসন্ধান</h1><p>জেলা প্রশাসকের কার্যালয়, ঢাকা</p></div>
+  </div>
+  <div class="hdr-srch">
+    <div class="sw">
+      <input type="text" id="gs" placeholder="বাংলা/English — কেস নং, দাগ নং, মৌজা, নাম, ফোন..." autocomplete="off" oninput="doSearch(this.value)">
+      <button class="sw-clr" onclick="clearSearch()">✕ মুছুন</button>
+      <span class="sw-icon">🔍</span>
+    </div>
+    <div class="sh">উদাহরণ: ৭৪৫১ &nbsp;·&nbsp; 7451 &nbsp;·&nbsp; বিশিল &nbsp;·&nbsp; bishil &nbsp;·&nbsp; ০৩/২৪-২৫ &nbsp;·&nbsp; বারিক &nbsp;·&nbsp; 01717</div>
+  </div>
+  <div class="tabs">
+    <button class="tbtn act" onclick="switchTab('tab3',this)">📂 শাখা-৩</button>
+    <button class="tbtn" onclick="switchTab('tab4',this)">📂 শাখা-৪</button>
+    <button class="tbtn" onclick="switchTab('tabC',this)">📋 এল.এ কেস</button>
+    <button class="tbtn" onclick="switchTab('tabM',this)">⚙️ ব্যবস্থাপনা</button>
+  </div>
+</header>
+
+<div class="main">
+  <!-- SEARCH RESULTS -->
+  <div id="sr">
+    <div class="srh"><span class="srt">🔎 অনুসন্ধানের ফলাফল</span><span class="src" id="src">0 টি</span></div>
+    <div id="srl"></div>
+  </div>
+
+  <!-- TAB 3 -->
+  <div id="tab3" class="tc">
+    <div class="slbl-row">
+      <div class="slbl" style="flex:1;margin:0">কর্মকর্তা / কর্মচারী — শাখা-৩</div>
+      <button class="btn btn-n" style="font-size:13px;padding:6px 14px" onclick="openAddStaff(3)">➕ কর্মী যোগ</button>
+    </div>
+    <div class="sg" id="sg3" style="margin-top:11px"></div>
+    <div class="slbl-row" style="margin-top:24px">
+      <div class="slbl" style="flex:1;margin:0">কর্মবণ্টন — শাখা-৩</div>
+      <button class="btn btn-n" style="font-size:13px;padding:6px 14px" onclick="openAddAssign(3)">➕ নতুন এসাইনমেন্ট</button>
+    </div>
+    <div id="as3" style="margin-top:11px"></div>
+  </div>
+
+  <!-- TAB 4 -->
+  <div id="tab4" class="tc">
+    <div class="slbl-row">
+      <div class="slbl" style="flex:1;margin:0">কর্মকর্তা / কর্মচারী — শাখা-৪</div>
+      <button class="btn btn-n" style="font-size:13px;padding:6px 14px" onclick="openAddStaff(4)">➕ কর্মী যোগ</button>
+    </div>
+    <div class="sg" id="sg4" style="margin-top:11px"></div>
+    <div class="slbl-row" style="margin-top:24px">
+      <div class="slbl" style="flex:1;margin:0">কর্মবণ্টন — শাখা-৪</div>
+      <button class="btn btn-n" style="font-size:13px;padding:6px 14px" onclick="openAddAssign(4)">➕ নতুন এসাইনমেন্ট</button>
+    </div>
+    <div id="as4" style="margin-top:11px"></div>
+  </div>
+
+  <!-- TAB CASES -->
+  <div id="tabC" class="tc">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:13px">
+      <div class="cfb" style="margin-bottom:0">
+        <button class="fbtn act" onclick="filterCases('all',this)">সব</button>
+        <button class="fbtn" onclick="filterCases('gazette',this)">গেজেট প্রকাশিত</button>
+        <button class="fbtn" onclick="filterCases('progress',this)">চলমান</button>
+        <button class="fbtn" onclick="filterCases('stayed',this)">স্থগিত</button>
+        <button class="fbtn" onclick="filterCases('pending',this)">প্রক্রিয়াধীন</button>
+      </div>
+      <button class="btn btn-n" style="font-size:13px;padding:6px 14px" onclick="openAddCase()">➕ কেস যোগ</button>
+    </div>
+    <div class="tw"><table>
+      <thead><tr><th>কেস নং</th><th>প্রকল্পের নাম</th><th>অবস্থা</th><th>গেজেট তারিখ</th><th>ক্ষতিপূরণ</th><th></th></tr></thead>
+      <tbody id="ctb"></tbody>
+    </table></div>
+  </div>
+
+  <!-- TAB MANAGE -->
+  <div id="tabM" class="tc">
+    <div class="slbl">কর্মী স্থানান্তর — একজনের দাগ/কেস অন্যজনকে দেওয়া</div>
+    <div class="fc">
+      <div class="ft">🔄 কেস / দাগ রি-অ্যাসাইন</div>
+      <div class="fg">
+        <div><label>শাখা</label><select id="ra-br" onchange="popRaSelects()"><option value="3">শাখা-৩</option><option value="4">শাখা-৪</option></select></div>
+        <div><label>উৎস (কার কাছ থেকে)</label><select id="ra-from"></select></div>
+        <div><label>গন্তব্য (কাকে দেবেন)</label><select id="ra-to"></select></div>
+        <div><label>আইনের ধরন</label><select id="ra-law"><option value="2017">২০১৭</option><option value="1982">১৯৮২</option><option value="1948">১৯৪৮</option></select></div>
+        <div><label>কেস/দাগ নম্বর (কমা দিয়ে)</label><input type="text" id="ra-cs" placeholder="৭৪৫১, ০৩/২৪-২৫"></div>
+        <div><label>মন্তব্য</label><input type="text" id="ra-note" placeholder="বদলি / অতিরিক্ত দায়িত্ব"></div>
+      </div>
+      <div class="bg"><button class="btn btn-g" onclick="doReassign()">🔄 রি-অ্যাসাইন করুন</button><button class="btn btn-s" onclick="document.getElementById('ra-cs').value=''">✕</button></div>
+    </div>
+
+    <div class="slbl">পরিবর্তনের লগ</div>
+    <div id="rlog"></div>
+
+    <div class="slbl" style="margin-top:28px">ডেটা রপ্তানি / আমদানি</div>
+    <div class="fc">
+      <div class="ft">💾 ব্যাকআপ ও পুনরুদ্ধার</div>
+      <div class="bg">
+        <button class="btn btn-n" onclick="exportData()">📤 রপ্তানি (.json)</button>
+        <button class="btn btn-g" onclick="document.getElementById('impF').click()">📥 আমদানি</button>
+        <button class="btn btn-r" onclick="resetAll()">🗑️ রিসেট</button>
+      </div>
+      <input type="file" id="impF" accept=".json" style="display:none" onchange="importData(event)">
+      <p style="font-size:12px;color:var(--mu);margin-top:10px">💡 রপ্তানি করা JSON ফাইলটি AI-কে দিলে স্বয়ংক্রিয়ভাবে পরিবর্তন করে নতুন ফাইল দেবে।</p>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Staff -->
+<div class="mo" id="mstaff">
+  <div class="md">
+    <div class="mdh"><span class="mdt" id="ms-title">কর্মী</span><button class="mdc" onclick="cM('mstaff')">✕</button></div>
+    <div class="mdb">
+      <input type="hidden" id="ms-br">
+      <div class="fg">
+        <div><label>নাম</label><input type="text" id="ms-name" placeholder="সম্পূর্ণ নাম"></div>
+        <div><label>পদবী</label><select id="ms-role"><option>কানুনগো</option><option>সার্ভেয়ার</option><option>অফিস সহকারী</option><option>চেইনম্যান</option></select></div>
+        <div><label>ফোন-১</label><input type="text" id="ms-phone" placeholder="01xxxxxxxxx"></div>
+        <div><label>ফোন-২</label><input type="text" id="ms-phone2" placeholder="01xxxxxxxxx"></div>
+        <div><label>যোগদান তারিখ</label><input type="text" id="ms-join" placeholder="DD/MM/YYYY"></div>
+        <div><label>সময়কাল</label><input type="text" id="ms-dur" placeholder="১ বছর ৬ মাস"></div>
+        <div style="grid-column:1/-1"><label>প্রতিকল্প</label><input type="text" id="ms-backup" placeholder="ব্যাকআপ কর্মীর নাম"></div>
+        <div style="grid-column:1/-1"><label>মন্তব্য</label><input type="text" id="ms-note" placeholder="যেমন: ভারপ্রাপ্ত"></div>
+      </div>
+      <div class="bg"><button class="btn btn-g" onclick="saveStaff()">💾 সংরক্ষণ</button><button class="btn btn-s" onclick="cM('mstaff')">বাতিল</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Assignment -->
+<div class="mo" id="massign">
+  <div class="md">
+    <div class="mdh"><span class="mdt" id="ma-title">এসাইনমেন্ট</span><button class="mdc" onclick="cM('massign')">✕</button></div>
+    <div class="mdb">
+      <input type="hidden" id="ma-br">
+      <div class="fg">
+        <div><label>কানুনগো</label><select id="ma-k"></select></div>
+        <div><label>সার্ভেয়ার</label><select id="ma-s"></select></div>
+        <div style="grid-column:1/-1"><label>প্রতিকল্প</label><input type="text" id="ma-bk" placeholder="ব্যাকআপ কানুনগো ও সার্ভেয়ার"></div>
+        <div style="grid-column:1/-1"><label>১৯৪৮ আইনের কেস (প্রতি লাইনে একটি)</label><textarea id="ma-c48" rows="3"></textarea></div>
+        <div style="grid-column:1/-1"><label>১৯৮২ আইনের কেস</label><textarea id="ma-c82" rows="3"></textarea></div>
+        <div style="grid-column:1/-1"><label>২০১৭ আইনের কেস (মৌজা ও দাগ নম্বরসহ)</label><textarea id="ma-c17" rows="5" placeholder="03/24-25(বিশিল-৭৪৫১,৭৪২১)"></textarea></div>
+        <div style="grid-column:1/-1"><label>মৌজা সমূহ (কমা দিয়ে)</label><input type="text" id="ma-mz" placeholder="বিশিল, নন্দীপাড়া, ভাটারা"></div>
+      </div>
+      <div class="bg"><button class="btn btn-g" onclick="saveAssign()">💾 সংরক্ষণ</button><button class="btn btn-s" onclick="cM('massign')">বাতিল</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Case -->
+<div class="mo" id="mcase">
+  <div class="md">
+    <div class="mdh"><span class="mdt">এল.এ কেস</span><button class="mdc" onclick="cM('mcase')">✕</button></div>
+    <div class="mdb">
+      <div class="fg">
+        <div><label>কেস নম্বর</label><input type="text" id="mc-num" placeholder="০৫/২৫-২৬"></div>
+        <div><label>অবস্থা</label><select id="mc-status"><option value="gazette">গেজেট প্রকাশিত</option><option value="progress">চলমান</option><option value="stayed">স্থগিত</option><option value="pending">প্রক্রিয়াধীন</option></select></div>
+        <div style="grid-column:1/-1"><label>প্রকল্পের নাম</label><input type="text" id="mc-name"></div>
+        <div><label>গেজেট তারিখ</label><input type="text" id="mc-gdate" placeholder="০২.১০.২০২৫"></div>
+        <div><label>ক্ষতিপূরণ (%)</label><input type="number" id="mc-pct" min="0" max="100"></div>
+        <div><label>মোট প্রাক্কলন</label><input type="text" id="mc-total"></div>
+        <div style="grid-column:1/-1"><label>মন্তব্য</label><input type="text" id="mc-note"></div>
+      </div>
+      <div class="bg"><button class="btn btn-g" onclick="saveCase()">💾 সংরক্ষণ</button><button class="btn btn-s" onclick="cM('mcase')">বাতিল</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+const BASE_STAFF3 = [
+  {id:'s3-1',br:3,name:'মোহাম্মদ জুলফিকার আলী ভুট্টো',role:'কানুনগো',phone:'01816294961',phone2:'',join:'১২/০৫/২০২৫',dur:'১ বছর',backup:'মোঃ হারুন-অর-রশিদ'},
+  {id:'s3-2',br:3,name:'মহসীন মিয়া',role:'কানুনগো',phone:'01922034203',phone2:'',join:'১০/০৫/২০২৬',dur:'১ মাস',backup:'চুন্নু মিয়া'},
+  {id:'s3-3',br:3,name:'মোহাম্মদ চুন্নু মিয়া',role:'কানুনগো',phone:'01972434385',phone2:'',join:'১০/০৫/২০২৬',dur:'১ মাস',backup:'মোঃ হারুন-অর-রশিদ'},
+  {id:'s3-4',br:3,name:'মোহাম্মদ রফিকুল ইসলাম',role:'কানুনগো',phone:'01725193502',phone2:'01724295703',join:'১০/০৫/২০২৬',dur:'১ মাস',backup:'মহসীন মিয়া'},
+  {id:'s3-5',br:3,name:'মোঃ হারুন-অর-রশিদ',role:'কানুনগো',phone:'01716234009',phone2:'',join:'১০/০৫/২০২৬',dur:'১ মাস',backup:'মোহাম্মদ জুলফিকার আলী ভুট্টো'},
+  {id:'s3-6',br:3,name:'মোঃ আব্দুল বারিক',role:'সার্ভেয়ার',phone:'01717146418',phone2:'',join:'২২/১১/২০২৩',dur:'২ বছর ৬ মাস',backup:'কেশব লাল দেব'},
+  {id:'s3-7',br:3,name:'কেশব লাল দেব',role:'সার্ভেয়ার',phone:'01617047033',phone2:'',join:'৩০/০১/২০২৫',dur:'১ বছর ৪ মাস',backup:'মোঃ শাহিনুর আলম'},
+  {id:'s3-8',br:3,name:'মোঃ শাহিনুর আলম',role:'সার্ভেয়ার',phone:'01330924033',phone2:'',join:'৩০/০১/২০২৫',dur:'১ বছর ৪ মাস',backup:'মোঃ সেলিম রেজা'},
+  {id:'s3-9',br:3,name:'মোঃ সেলিম রেজা',role:'সার্ভেয়ার',phone:'01714860326',phone2:'',join:'২১/১০/২০২৫',dur:'৬ মাস',backup:'মোঃ মজিবুল হক'},
+  {id:'s3-10',br:3,name:'মোঃ মজিবুল হক',role:'সার্ভেয়ার',phone:'01997458800',phone2:'',join:'০৮/০৫/২০২৬',dur:'১ মাস (অতিরিক্ত দায়িত্ব)',backup:'মোঃ শাহিনুর আলম'},
+  {id:'s3-11',br:3,name:'ইব্রাহিম মোল্লা',role:'অফিস সহকারী',phone:'01515242305',phone2:'',join:'১৬/০৪/২০২৬',dur:'১ মাস',backup:'হাফসা খানম'},
+  {id:'s3-12',br:3,name:'মোঃ ওয়ালিদ মিয়া',role:'অফিস সহকারী',phone:'01568404034',phone2:'',join:'১৬/০৪/২০২৬',dur:'১ মাস',backup:'হারুন আল রশিদ'},
+  {id:'s3-13',br:3,name:'হাফসা খানম',role:'অফিস সহকারী',phone:'01920708268',phone2:'',join:'১৬/০৪/২০২৬',dur:'১ মাস',backup:'ইব্রাহিম মোল্লা'},
+  {id:'s3-14',br:3,name:'হারুন আল রশিদ',role:'অফিস সহকারী',phone:'01912606488',phone2:'',join:'২৯/০৭/২০২৫',dur:'১০ মাস',backup:'মোঃ ওয়ালিদ মিয়া'},
+  {id:'s3-15',br:3,name:'মোঃ সিরাজ মিয়া',role:'চেইনম্যান',phone:'01730150483',phone2:'',join:'২০/১১/২০২৩',dur:'২ বছর ৬ মাস',backup:''},
+  {id:'s3-16',br:3,name:'মেনোয়ারা বেগম',role:'চেইনম্যান',phone:'01686502006',phone2:'',join:'১৮/০৯/২০২৪',dur:'১ বছর ৮ মাস',backup:''},
+  {id:'s3-17',br:3,name:'কাজী আব্দুল্লাহ মনা',role:'চেইনম্যান',phone:'01924806863',phone2:'',join:'২৮/০৫/২০২৪',dur:'২ বছর',backup:''},
+  {id:'s3-18',br:3,name:'মোঃ নজরুল ইসলাম',role:'চেইনম্যান',phone:'01719865006',phone2:'',join:'০৮/০৩/২০২৪',dur:'২ বছর ২ মাস',backup:''},
+  {id:'s3-19',br:3,name:'রোকেয়া আক্তার',role:'চেইনম্যান',phone:'01567421598',phone2:'',join:'১০/০৯/২০২৫',dur:'৯ মাস',backup:''},
+  {id:'s3-20',br:3,name:'মোঃ রফিকুল আলম রিন',role:'চেইনম্যান',phone:'01730924292',phone2:'',join:'২৭/১১/২০২৫',dur:'৬ মাস',backup:''},
+];
+const BASE_STAFF4 = [
+  {id:'s4-1',br:4,name:'মোঃ জাকির হোসেন',role:'কানুনগো',phone:'01822170416',phone2:'',join:'১০/০৫/২০২৬',dur:'১ মাস',backup:'মো: মোশারেফ হোসেন',note:''},
+  {id:'s4-2',br:4,name:'মো: মোশারেফ হোসেন',role:'কানুনগো',phone:'01842444780',phone2:'',join:'০১/০৬/২০২৫',dur:'১ বছর',backup:'মোঃ জাকির হোসেন',note:'(ভারপ্রাপ্ত)'},
+  {id:'s4-3',br:4,name:'মো: খলিলুর রহমান',role:'সার্ভেয়ার',phone:'01711269416',phone2:'',join:'১৮/০৭/২০২৪',dur:'১ বছর ৮ মাস',backup:'মোঃ শাহ আলম'},
+  {id:'s4-4',br:4,name:'মোঃ শাহ আলম',role:'সার্ভেয়ার',phone:'01716022425',phone2:'',join:'০৮/০২/২০২৬',dur:'৪ মাস',backup:'মো: রমজান আলী'},
+  {id:'s4-5',br:4,name:'শংকর কুমার সরকার',role:'সার্ভেয়ার',phone:'01722291452',phone2:'',join:'১১/০২/২০২৬',dur:'৪ মাস',backup:'মো: মামুন হোসেন'},
+  {id:'s4-6',br:4,name:'মোঃ মামুন হোসেন',role:'সার্ভেয়ার',phone:'01716894460',phone2:'',join:'১১/০২/২০২৬',dur:'৪ মাস',backup:'শংকর কুমার সরকার'},
+  {id:'s4-7',br:4,name:'মোঃ রমজান আলী',role:'সার্ভেয়ার',phone:'01718118936',phone2:'',join:'০৬/০৩/২০২৬',dur:'৩ মাস',backup:'মোঃ শাহ আলম'},
+  {id:'s4-8',br:4,name:'মোঃ আবুল খায়ের',role:'সার্ভেয়ার',phone:'01712442367',phone2:'',join:'১৩/০৫/২০২৬',dur:'১ মাস',backup:'শংকর কুমার সরকার'},
+  {id:'s4-9',br:4,name:'সাইফুল ইসলাম অপু',role:'অফিস সহকারী',phone:'01518429210',phone2:'',join:'১৬/০৪/২০২৬',dur:'১ মাস',backup:'মোঃ রমজান আলী'},
+  {id:'s4-10',br:4,name:'হাবিবা ইয়াসমিন সুরভী',role:'চেইনম্যান',phone:'01716594627',phone2:'',join:'১০/০৯/২০২৫',dur:'৮ মাস',backup:''},
+];
+
+
+const BASE_ASSIGN3 = [
+ {id:'a3-1',br:3,kanungo:'মোহাম্মদ জুলফিকার আলী ভুট্টো',surveyor:'মোঃ মজিবুল হক',
+  backup:'মোঃ হারুন-অর-রশিদ (কানুনগো) ও মোঃ শাহিনুর আলম (সার্ভেয়ার)',
+  cases:{
+   '1948':['87/65-66','74/57-58','82/66-67','83/66-67','84/66-67','14/67-68','56/67-68','83/67-68','83-G/67-68','29/79-80','36/1950-51','07/49-50','24/54-55','36/57-58','77/61-62','108/60-61','153/62-63','14/79-80','92/62-63','99/62-63','126/62-63','19/63-64','39/1950-51','24/58-59','59/59-60','29/54-55','31/60-61'],
+   '1982':['08/97-98','06/08-09','15/10-11','02/94-95','05/07-08','06/2009-10','11/2009-10','08/2005-06','13/87-88','18/84-85','01/2005-06','10/2007-08','08/1993-94','02/1985-86','06/1995-96','09/84-85','08/2011-12','14/2011-12','04/2007-08','11/92-93','11/2006-07','01/2014-15','11/94-95','05/95-96','18/86-87','04/15-16(বড় মগবাজার)','06/2000-01'],
+   '2017':['16/21-22(মূল ফাইল)','08/23-24(মূল ফাইল)','15/2023-24(মূল ফাইল)','05/22-23(নন্দীপাড়া-৪৮৮৪,৪৮৮৫,৪৯০৬,৮২২৩,৮২২৪,৮২২৬,৮২৩৯,১৩৯১৩,৮৪২৫,৪৮৪০,৪৮৮৩,৮২২৫,১০১৬১,১০১৯৭,১০২৫৯,১০৬৩২,১২৭৯৫,১৩২০৯,১৩২১২,১৩২৪৩,১৩১৯৪,১৩১০৩,১৩১১০)','03/21-22(চুনকুটিয়া,চরগলগলিয়া,বাঘৈর)','01/23-24(বলিয়ারপুর-৩৭২৪,৩৭২৫,বেগুনবাড়ী-১৬৫,১৬৬,১৬৮)','08/23-24(ভাটারা-৭৮৮৬,১৩১১৮,১৩৩২৩,জোয়ার সাহারা-৫৭৭৫৬,৫৭৮৯২,৫৭৮৯৫,৫৭৭৫৩)','11/20-21(বড় মগবাজার-৩৯৬৩)','17/20-21(কোন্ডা-৮৫২৩,৮৫৩১,৮৫৩২,৯০৬১,৯০৮১,১০৩৪৩,১০৩৬১,১০৩৭৭,১০৮৩৫,১০৮৩৭,১০৮৪০,১০৯০২,১১৬১৫,১১৬৪৩,১১৬৫২,১২৪১২,১২৪২০,৮৫১৬,৮৫১৭,৮৫২০,৯০৮০,১০৩৬২,১০৩৬৩,১০৩৭১,১০৩৮২,১০৯০৪,১১৬০৩,১১৬১৭,১১৯০২,১১৯২০,১১৯২৯,১১৯৪৮,১২৪০২,১২৪০৭,১২৪১৪,১২৪২২)','08/21-22(সেনপাড়া পর্বতা-৪২৪৮৮,৪২৪৯৩,৪৫৮০০,৫৮৭৫২,৪৫৬৮৩,৪৫৮৮৩,৫৭৮৮৭,৩৮১৯,২৪৭১৭,৪২৩৪২,৫৭৯১৫)','18/2023-24(বড় আশুলিয়া-৮৮৭,২১২৪,২৩৪০,৫০২৫,৫৩২০,৮৯৭,২১৩৭,৪৩২৪,৫০৪৮,৪৩২৩,৮৯৬,২১৩০,৫০৪৬,৫৫০৯,৪৩১৬,৪৩১৯,জিরাবো-২০১,২৬০,২,২৫৮,২৩২,২৭৯,৩০১,তৈয়বপুর-৪৫৫৫,৫৯০৯,৬০০৬,৪৮৪০,৪৮৪১,৫৯১১,৬০০৭,দিয়াখালী-১০৪১১,১০৫০৩,১০৮৪০,আসুতিয়া-৬,৯,১০,চকবাসাইদ-১৯,৩৭,৬০,২২,৫৯,দক্ষিণখান-৭৭০৩)','03/2023-24(বিশিল-৭৪৫১,সেনপাড়া পর্বতা-৪০৮৫৩)','02/2023-24(সেনপাড়া পর্বতা-২৬৭৮৫,২৬৭৮৭,২৬৭৯৫)','17/2023-24(মূল ফাইল)','03/2024-25(মূল ফাইল)','04/2022-23(আমুলিয়া-১১,১২,১৩,১৫,২৯,৩০,৩১,১০৭৭,২৭৫৭,২৫০৭,২৫০৮,২৮৪৫,২৮৪৬,২৯৫৯,২৯৬০,২৯৬২,উত্তর দূর্গাপুর-৮২৮,৮৩৯,বালুধিতপুর-৩২৬৮,৩২৬৯,৩৩৮০,৩৩৮১,কায়েতপাড়া-১১১১,১১৩২,১১১৭,নড়াইবাগ-২০৫২,২০৭০,২০৮০,২০৯২,ঘোপদক্ষিণ-১০২,১৬,দেইল্যা-৭৪)','10/19-20(বড় আশুলিয়া-৩০৯,৩১০,৩১২,৩২৮,৪১১,৪১২,জিরাবো পূর্ণ)','13/18-19(বড় আশুলিয়া,আব্দুল্লাহপুর,ধউর)','12/23-24(ডাউটিয়া-১৭৮৪,১৭৮৫,নান্দেশ্বরী-৬২,৬৩,৭০,বাউখন্ড-২৪৪৭,২৪৭২,২৪৭৩,উত্তর নওহাট্টা-১৩০,১৩১,১৩২,ভালুম-৪৭২৯,৪৭৩০,ছোটকালামপুর-১১৩০,১১৩১,১৩৯০-১৪৩৯,১৬৯৫,১৬৯৬,১৬৯৭)','17/23-24(শহর খিলগাঁও,সিদ্ধেশ্বরী,উত্তর ব্রাহ্মণচিরণ)','03/24-25(উত্তর কাউন্দিয়া-৬১৫২,বেগুনবাড়ী-১৫৫,১৬৪,২৫০,কোন্ডা-১৮২৪)','15/23-24(দ্বিমুখা-১৩৭,১৫৫,৩৩৪,৩৩৫,৩৯০,৩৮৮,৩৯৯)','03/18-19(তেজগাঁও,বনানী)']
+  },
+  mouzas:['নন্দীপাড়া','চুনকুটিয়া','চরগলগলিয়া','বাঘৈর','বলিয়ারপুর','বেগুনবাড়ী','ভাটারা','জোয়ার সাহারা','বড় মগবাজার','কোন্ডা','সেনপাড়া পর্বতা','বড় আশুলিয়া','জিরাবো','তৈয়বপুর','আব্দুল্লাহপুর','দিয়াখালী','আসুতিয়া','চকবাসাইদ','দক্ষিণখান','বিশিল','আমুলিয়া','উত্তর দূর্গাপুর','বালুধিতপুর','কায়েতপাড়া','নড়াইবাগ','ঘোপদক্ষিণ','দেইল্যা','ডাউটিয়া','নান্দেশ্বরী','বাউখন্ড','উত্তর নওহাট্টা','ভালুম','ছোটকালামপুর','শহর খিলগাঁও','উত্তর কাউন্দিয়া','তেজগাঁও','বনানী','দিয়াবাড়ী']
+ },
+ {id:'a3-2',br:3,kanungo:'মহসীন মিয়া',surveyor:'মোঃ আব্দুল বারিক',
+  backup:'মোহাম্মদ চুন্নু মিয়া (কানুনগো) ও কেশব লাল দেব (সার্ভেয়ার)',
+  cases:{
+   '1948':['96/62-63','31/76-77','02/78-79','23/49-50','24/49-50','39/50-51','47/50-51','39/51-52','07/52-53','09/1952','13/1948-49','73/62-63','77/62-63','7(1)(2)(3)/65-66','49/61-62','08/58-59','34/54-55','109/60-61'],
+   '1982':['10/1998-99','10/1999-2000','54/82-73','1/84-85','12/84-85','19/84-85','05/2015-16','10/2004-05','12/2004-05','09/97-98','11/1999-2000','9/87-88','08/2000-01','16/2000-01'],
+   '2017':['03/2023-24(বিশিল-৭৪২১,মূল ফাইল)','02/2023-24(সেনপাড়া পর্বতা-২৬৭৮৬,২৪৭০৩,মূল ফাইল)','04/2022-23(আমুলিয়া-৬,৭,৮,৯,২৭৫৮,২৭৫৯,২৭৬২,২৭৮২,২৭৮৬,২৭৮৮,২৭৯১,২৭৯২,২৭৯৩,২৮০৯,২৮১০,৬৬২,৬৬৩,৬৬৪,৬৭০,৬৭৩,৬৭৪,৬৭৫,৬৭৬,৭২২,১০৫১,১০৫২,১০৫৭,১০৫৮,১০৫৯,১০৬০,১০৬১,১০৬২,১০৭৬,১১৩১,১১৩৬,১১৩৮,১১৩৯,১১৪৭,বালুধিতপুর-৩২৭০,৩২৭১,৩৩৭০,৩৩৭১,৩৩৭৬,৩৩৭৭,৩৩৯৯,৩৫৯০,৩৫৯৩,নড়াইবাগ-১৯১৩,১৯২৫,১৯২৬,২২৫২,২২৫৩,২২৫৬,৬১৪,৬১৬,৬১৭,৬১৯,৬২১,৬২৫,৬২৭,৬৫১,৬৫৩,৬৫৪,৭০৯,দেইল্যা-৬৬,৭০,৭২,কামারঘোপ-২১১,২১২,২৩০,ঘোপদক্ষিণ-১০৩,১০৫,কায়েতপাড়া-৯৮৭,৯৯০,৯৯৩)','05/22-23(নন্দীপাড়া-৪৮১০,৪৮১১,৪৮১২,৪৮১৩,৪৮৩৯,৪৮৪১,৮৭৭৮,৪৮৪২,৪৮৪৩,৪৮৫৮,৪৮৫৯,৪৮৬০,৮৭৭৬)','06/22-23(বিলামালিয়া-৮৭৯,৮৮৫,২০০,২০৩,কান্দিবলিয়ারপুর-৫৭১,৬৮৯,৫৭৯,৬৯১,৫৪৬,৫৭৩,৬৫২,৬৫৫,কোন্ডা-১৮৩০,১৮৩১,৮৫০৪,৮৫১০,৮৫১১)','13/2023-24(মূল ফাইল)','01/23-24(বেগুনবাড়ী-১৬২,১৬৩,১৬৪,বলিয়ারপুর-৩৭২৬)','08/23-24(ভাটারা-১২৪৫১,১৩৩২৫,১৩১২৫,জোয়ার সাহারা-৫৭৭৫১,৫৭৮৭৬)','03/18-19(তেজগাঁও শি/এ,তেজগাঁও)','09/2019-20(মূল ফাইল)','21/2017-18(দিয়াবাড়ী)','17/20-21(বিলামালিয়া)','18/2020-21(মতিঝিল-২৭৮০,২৮৭০)','14/2021-22(বাড্ডা)','18/2023-24(বড় আশুলিয়া-৮৯২,২১২৯,২৩৪১,২৩২৮,৫২১৩,৫৩০৪,৪৩১৫,২১০৮,২১৩১,৩১৩২,৪৩১৭,৫০৪৭,জিরাবো-২৩০,২৭৪,২০৬,২৭২,৩০৩,তৈয়বপুর-৪৩৯,৬০০৪,৭০৫,৪৮৪২,৬০০৮)','07/2023-24(নন্দীপাড়া-৯১৩৮,৯৭৬৮,১৫৪৫০,১৫৪৫১,১৫৭০২)','15/23-24(দ্বিমুখা-৮৮,১৩৬,১৫৬,২৯৬,৩০৫,৩২০,৩৩৮,৩৮০,৩৯১,৪০০)','12/23-24(নবগ্রাম-৯৮,১৪৫,মহিষাসী-৫৫৯,৫৬০,নান্দেশ্বরী-৫৯,বাউখন্ড-২৪৪৩,২৪৪৪,উত্তর নওহাট্টা-১১৬-১২১,ভালুম-৩৭৩০,৩৭৩৬,ছোটকালামপুর-২০৫৩-২০৬৭)','17/23-24(উত্তর ব্রাহ্মণচিরণ,উলুন-৩৬৪৪)','03/24-25(উত্তর কাউন্দিয়া-৬১৭০,বেগুনবাড়ী-১৬৩,২৪৪,২৪৭,ভাটারা-১৫৪৪৫,১৫৮৫৭,১৫৮৫৮)']
+  },
+  mouzas:['বিশিল','সেনপাড়া পর্বতা','আমুলিয়া','নন্দীপাড়া','বিলামালিয়া','কান্দিবলিয়ারপুর','বেগুনবাড়ী','ভাটারা','তেজগাঁও','তেজগাঁও শিল্প এলাকা','বনানী','দিয়াবাড়ী','বালুধিতপুর','নড়াইবাগ','কায়েতপাড়া','দেইল্যা','কামারঘোপ','কোন্ডা','বাড্ডা','মতিঝিল','জিরাবো','তৈয়বপুর','নবগ্রাম','মহিষাসী','নান্দেশ্বরী','বাউখন্ড','উত্তর নওহাট্টা','ভালুম','ছোটকালামপুর','উত্তর ব্রাহ্মণচিরণ','উলুন']
+ },
+ {id:'a3-3',br:3,kanungo:'মোহাম্মদ চুন্নু মিয়া',surveyor:'কেশব লাল দেব',
+  backup:'মহসীন মিয়া (কানুনগো) ও মোঃ আব্দুল বারিক (সার্ভেয়ার)',
+  cases:{
+   '1948':['82/57-58','06/69-70','10/72-73','37/50-51','12/73-74','09/57-58','95/61-62','71/64-65','56/67-68','83/67-68','40/77-78','71/61-62','40/58-59','21/64-65','74/57-58','33/54-55','102/60-61'],
+   '1982':['03/11-12','29/79-80','04/1996-97','05/05-06','08/2006-07','02/82-83','13/84-85','02/2004-05','14/2015-16','11/2009-10','17/95-96','08/97-98','22/86-87','12/98-99','19/99-2000'],
+   '2017':['09/23-24(দিয়াবাড়ী-২০৭১,৩৩৪৩,২০৪২,৩৩৪০,৩৩৪১,২০৪৬,২০৫৫)','10/23-24(বেগুনবাড়ী-১৬৫,১৬৬,১৬৮,১৬৯,১৬২,১৬৩,১৬৪)','05/2024-25(নন্দীপাড়া-৪,৭,৮,৯,৪৮৬০,৮৭৮৮,১২৭৫০,১২৭৫৮,১২৭৫৯,১২৭৮৮,১২৭৩৩,১২৭৯৩,১২৭৯৪,১২৮০৩,১২৮০৭-১২৮১০,মেরাদিয়া-৩০১১,৩৪০১)','04/2022-23(আমুলিয়া-১১৩৬,১১৫৩,২৭৫৩,২৮২১,২৮২২,২৮৩৫,২৮৩৭,২৮৪৪,৫৪৫৫,৫৬২২,৫৬২৩,বালুধিতপুর-৩২৬৭,৩৩৭৮-৩৩৭৯,৩৪৩২,৩৪৩৫,কায়েতপাড়া-১১০১,১১০৪,১১১২-১১১৪,নড়াইবাগ-২০০৯,২০১২,২০২৫-২০২৮,২২২৮-২২৬০,কামারঘোপ-২০৯,২১৭,২১৮,উত্তর দুর্গাপুর-৮২৬,৮৩৭)','18/20-21(উত্তর ব্রাহ্মণচিরণ-১১১,৫৮৪,৫৯৩,৬০৩,৬১২,১১৫,৫০৩,৫০৪,৫১০,৫৯২,৫৯৭,৫৯৯,৬০৪,৬০৯,৬১৪)','06/22-23(কোন্ডা-১৮২৬,৮৫০৮,কান্দিবলিয়ারপুর-৬৯২,৭০২,৬৫৪,৬৫৬,৬৫৭,৭৪৩,বিলামালিয়া-৬৪৩,৮৭৮,৮৮৭)','12/2021-22(সোনাকান্দা-২৫৫৭,২৫৬৩,২৫৭৫-২৫৮০,২৬০৫-২৬০৮,২৬৩৩,২৩৯৫,২৪০৩,২৪০৪,২৪১১,২৫৫৫,২৫৫৬)','11/20-21(তেজগাঁও শি/এ-৭৫৩১,৭৭১৩,তেজগাঁও-৭৭১,২৫৫৩,জোয়ার সাহারা-১৮২৩৬,বড় মগবাজার-৬৭২৬)','13/18-19(বড় আশুলিয়া-৩০১০,৩০৯৬,৩১০৮,৩১০৯,৩১৪২,৩২৯৩,রানাভোলা-৬৮৫)','10/19-20(বড় আশুলিয়া-৩০৮,৩৬১,৩৭২-৩৭৪,৩৯৩,৩৯৮,৪০৩,৪২৬,৪৬৬,৪৮২,৪৯৮)','17/20-21(কোন্ডা-৮৫৩৪,৯০৫৩,৯০৫৭,৯০৫৮,১০৩৪৭,১০৩৬৫,১০৩৭৬,১০৩৮১,১০৮৯২,১০৯০১,১১৬১৬,১১৬৫৪,১১৯১৪,১১৯২২,১১৯২৮-১১৯৩০,১২৪১১,১২৪১৫)','02/2023-24(সেনপাড়া পর্বতা-২৪৮৩৩)','12/23-24(ডাউটিয়া-৭৯৪,৭৯৬,১৭৮৩,নান্দেশ্বরী-৬১২,বাউখন্ড-২৪৪৬,উত্তর নওহাট্টা-১৩৫-১৩৮,১৭৪,১৭৫,ভালুম-৩৭৯০,৩৮০০,৪৬৭৪,ছোটকালামপুর-১৪৩৭-১৪৩৯,১৬৯৫-১৬৯৭)','15/23-24(দ্বিমুখা-৯৪,২৭২,৩১২,৩১৬,৩৩৯,৩৭৫,৩৯৮)','03/24-25(উত্তর কাউন্দিয়া-৬১৫৮,বেগুনবাড়ী-১৬১,১৬২,১৭০,২৩৮,৫০৮,গুলশান-৩৭৮৭)','08/23-24(ভাটারা-৮৯১০,১২৫০৭,৮৯০৩,৭৯২৭,৮৯০৬,৭৮৮৫,১৩৩২৮,জোয়ার সাহারা-৫৭৭৫৩,৫৭৭৫৫,৫৭৮৯৩,৫৯৭৬৮,৫৭৭৩৭,৫১২৩৪,৫৭৮৭৫)']
+  },
+  mouzas:['দিয়াবাড়ী','বেগুনবাড়ী','ভাটারা','জোয়ার সাহারা','নন্দীপাড়া','মেরাদিয়া','আমুলিয়া','বালুধিতপুর','কায়েতপাড়া','নড়াইবাগ','কামারঘোপ','উত্তর দুর্গাপুর','দেইল্যা','ঘোপদক্ষিণ','উত্তর ব্রাহ্মণচিরণ','কোন্ডা','কান্দিবলিয়ারপুর','বিলামালিয়া','সোনাকান্দা','তেজগাঁও','তেজগাঁও শিল্প এলাকা','বড় আশুলিয়া','রানাভোলা','সারুলিয়া','সেনপাড়া পর্বতা','ডাউটিয়া','নান্দেশ্বরী','বাউখন্ড','উত্তর নওহাট্টা','ভালুম','ছোটকালামপুর','গুলশান']
+ },
+ {id:'a3-4',br:3,kanungo:'মোহাম্মদ রফিকুল ইসলাম',surveyor:'মোঃ সেলিম রেজা',
+  backup:'মোঃ হারুন-অর-রশিদ (কানুনগো) ও মোঃ মজিবুল হক (সার্ভেয়ার)',
+  cases:{
+   '1948':['71/64-65','91/61-62','92/61-62','06/55-56','95/61-62','22/72-73','40/72-73','21/73-74','39/79-80','58/57-58','87/65-66','82/66-67','14/67-68','56/67-68','83/67-68','26/51-52','154/61-62','31/73-74','161/60-61','42/61-62','66/57-58','64/54-55','143/60-61'],
+   '1982':['04/15-16(মূল ফাইল ও তেজগাঁও)','03/15-16','01/94-95','06/2006-07','11/07-08','4/08-09','3/04-05','4/04-05','04/15-16(তেজগাঁও শি/এ)','04/1992-93','40/1983-84','07/2001-02','06/2007-08','05/2016-17','06/2016-17','11/2016-17','02/85-86','02/93-94','08/93-94','7-1998','10/98-99','01/92-93','02/2007-08','08/1993-94'],
+   '2017':['02/2019-20(তেজগাঁও শি/এ-৫৯০৬)','03/18-19(তেজগাঁও-205,238,618,1964,2544-2552,2595,2635,2637,2684,2685,2734,2770,2771,5724-5726,672,707,709,712,714,716,720,724,734-740,765-767,770,772,781,783,784,204,221,617,644,মহাখালী)','12/18-19(মূল ফাইল)','13/18-19(বড় আশুলিয়া-৩১৪১,৩১৫৫,৩২৮৯,৩৩০৮-৩৩১০,৩৩৫৩,বাইপাইল-৫৩,রসাদিয়া-১২)','10/19-20(বড় আশুলিয়া-৩০১-৩০৪,৩৮৪-৩৯০,৪২০,৪৯৬-৫০৩,৩২৫,৩২৭,৩৭৫-৩৮৩,৪২৩,৪৮৭-৪৯৪,বাইপাইল)','18/2023-24(বড় আশুলিয়া-৮৯০,২১২৭,৫০২৯,৫৫০৮,৪৩০৪,৮৮৬,২১২৩,২৩৩৯,৫০২২,৫৩০৫,জিরাবো-২০৩,২৬১,২৫৭,৩০২,তৈয়বপুর-৪৫৫৭,৫৯১০,৪৮৩৭,৬০০০,পূর্ব নরসিংহপুর-১০৪৪,১০৪৫,১৯১১,দিয়াখালী-১০৪৫৩-১০৪৫৬,আসুতিয়া-৩১,৩৯,৩০১,চকবাসাইদ-২৩,৩৩,৩৮,৬১-৬৩,দক্ষিণখান-৭৬৯৮)','03/2023-24(সেনপাড়া পর্বতা-৩৮২৩৪,বিশিল-৭৪৪৮)','04/2022-23(আমুলিয়া-২৪৭৮-২৫০৫,উত্তর দূর্গাপুর-৮৩৮,৮৪১,৮২৭,বালুধিতপুর-৩৪২৩,৩৫৮৫-৩৫৯৪,কায়েতপাড়া-৯০২,৯৮১-৯৮৬,৯৯৫,১১৩৪,নড়াইবাগ-৭১১-৭২৩,২০০৮,২০২৬,২০৫১,দেইল্যা-৭৩)','11/20-21(তেজগাঁও শি/এ-৭৮০৩-৭৮০৬,৭৮২৩,৭৮২৪,তেজগাঁও-২০৬২)','17/20-21(কোন্ডা-৮৫২১,৮৫২৯,৮৫৩৮,৯০৫৯,৯০৮৬,১০৩৭৫,১১৬০৪,১১৬০৫,১১৬৪১,১১৯১৬,১১৯২৫,১১৯৩৩,১১৯৪১,১১৯৫৩,১২৪০৯)','08/21-22(সেনপাড়া পর্বতা-৪২৩৪১,৪২৪৯১,৪৫৬৮৪,৪৫৬৭৯,৫৯১২৮,৪২৪৮৭,৪৫৮৩৫,৪৫৮৫৮,৫৭৮৮৩,৫৯১২৭)','05/22-23(নন্দীপাড়া-৫,৮২৪৫,৮২৪৬,৪৮০১,৮৭৭৯,১০১৯৪,১০১৯৫,১০২২৩-১০২৭৬,১০৬৩১,৪৮০২-৪৮০৯,৮৭৮৭,১২৭৩৪-১২৭৪২)','18/20-21(উত্তর ব্রাহ্মণচিরণ-৫৮৩,৫৯০,৫৫১,৫৯৬,৬০০,১০৭,৫৭৯,৫৯৫,৬০২,৭০৮)','06/22-23(বিলামালিয়া-১৩৮,১৩৯,১৪০,১৯৯,চান্দুলিয়া-২০২৬,কান্দিবলিয়ারপুর-৬৫৯,৭৩০,৭০১,৫৩৯,৫৪১,৬৮৬,৭৫৫,৫৭০,৫৭২,৬৬০,৭২৯,৭৩১,কোন্ডা-১৮২৪,১৮২৭,৮৫০৫,৮৫০৬,৮৫১৪)','15/2021-22(সারুলিয়া-৪১৫৬,৫১১৫,৫৩২১,৩৮১৭,৩৮২৭,৩৮২৮)','08/23-24(ভাটারা-১২৫০৮,১৩৩৪৮,১৩৩২২,৭৮৮৭,১৩২৮৬,জোয়ার সাহারা-৫৭৭৫৪,৫৭৮৭৩,৫৭৮৯৪,৫৯৭৬০,৫১২৮৩,৫৭৭৫৭)','09/23-24(দিয়াবাড়ী-৩৩৪৪,৩৩৪৭,৩৫০৭,২০৩৭-২০৩৯,২০৪৫,২০৫৩)','07/2023-24(৯১৩৮,৯৭৬৮,১৫৪৫০,১৫৪৫১,১৫৭০২,১০৬১৭,১৫১২৪,১৫১৮০,১৫৪৫৫)','01/2021-22(বড় মগবাজার)','12/2021-22(সোনাকান্দা-৫০৪৩,৫০৪৭,৫০৪৯,৫০৫১)','01/23-24(বলিয়ারপুর-৩৭৭৪,৪০৩৯,৪০৪০,৪১৪৮,৪১৫৯)','12/23-24(ডাউটিয়া-৭৯৫,নান্দেশ্বরী-৫৫,৫৬,বাউখন্ড-২৪৪৫,উত্তর নওহাট্টা-১২২,১২৪,ভালুম-৩৭৮১-৩৭৮৮,ছোটকালামপুর-১৬৯৯-১৭০৭,১৭৮৯-১৭৯৪,১৮৩১-১৮৪০,২০৪৯-২০৫৩)','15/23-24(দ্বিমুখা-৮৭,৯০,১২৬,২৬৭,৩০৬,৩১৯,৩৭৯,৩৯৫,৪০১)','03/24-25(উত্তর কাউন্দিয়া-৬১৫৭,বেগুনবাড়ী-১৬০,১৬৯,২৪৩,শালিপুর-২০৩,ভাটারা-১৫৪৪৫,১৫৮৫৭)']
+  },
+  mouzas:['তেজগাঁও','তেজগাঁও শিল্প এলাকা','মহাখালী','বাইপাইল','রসাদিয়া','সেনপাড়া পর্বতা','বিশিল','আমুলিয়া','নন্দীপাড়া','উত্তর ব্রাহ্মণচিরণ','বিলামালিয়া','চান্দুলিয়া','কান্দিবলিয়ারপুর','কোন্ডা','সারুলিয়া','সোনাকান্দা','বড় আশুলিয়া','জিরাবো','তৈয়বপুর','পূর্ব নরসিংহপুর','দিয়াখালী','আসুতিয়া','চকবাসাইদ','দক্ষিণখান','ভাটারা','জোয়ার সাহারা','দিয়াবাড়ী','বড় মগবাজার','বলিয়ারপুর','বেগুনবাড়ী','ডাউটিয়া','নান্দেশ্বরী','বাউখন্ড','উত্তর নওহাট্টা','ভালুম','দ্বিমুখা','শালিপুর']
+ },
+ {id:'a3-5',br:3,kanungo:'মোঃ হারুন-অর-রশিদ',surveyor:'মোঃ শাহিনুর আলম',
+  backup:'মোহাম্মদ চুন্নু মিয়া (কানুনগো) ও মোঃ মজিবুল হক (সার্ভেয়ার)',
+  cases:{
+   '1948':['12/67-68','93/61-62','103/61-62','32/51-52','27/57-58','39/58-59','61/59-60','05/62-63','83/66-67','27/77-78','32/77-78','40/77-78','09/52-53','37/55-56','35/70-71','48/76-77','31/76-77','02/78-79','78/57-58','05/57-58','09/60-61','29/60-61'],
+   '1982':['4/15-16(মহাখালী)','02/2001-02','07/11-12','11/98-99','08/82-83','07/16-17','02/03-04','40/84-85','04/15-16(কাওরান)','39/84-85','11/93-94','15/85-86','07/88-89','04/2009-10','39/1983-84','01/1997-98','4/14-15','2/15-16','02/2015-16','04/1994-95','07/1999-2000'],
+   '2017':['06/22-23(চান্দুলিয়া-২০৫৭,২০৫৮,কান্দিবলিয়ারপুর-৬৯০,৭০২,৬৫৮,৬৮৭,৭২৯,কোন্ডা-৮৫০২,৮৫০৭,৮৫১৭,চান্দুলিয়া-২০১৬,২৫২০,২৫২২,বিলামালিয়া-১৩৭,৮৮৬)','17/20-21(কোন্ডা-৮৫১৮,৮৫২৬,৮৫৩৩,৮৫৩৫,৯০৮২,১০৩৪৬,১০৩৪৪,১০৩৬৪,১০৩৭৮,১০৩৮০,১০৮৯৪-১০৯০২,১০৯০০,১১৩৩৬,১১৬৩৪,১১৬৪৬,১১৬৫৫,১১৯০৪-১১৯৫০,১২৪০৩,১২৪২১,১২৪২৩)','18/20-21(উত্তর ব্রাহ্মণচিরণ-১০৮,৫৮০,৫৮৯,৫৯৪,৬০১,৬১১,৬১৩,১১২)','03/21-22(শুভাঢ্যা)','08/21-22(সেনপাড়া পর্বতা-৪৫৬৮২,৪৫৬৮৫,৪৫৬৮৬,৫৮৬৬৭,৪২৪৯৪,৪৫৭০২,৪৫৮৬৪,৫৭৮৮৯,৫৭৮৯০,৫৮৭২৪,৫৮৬৬৯,৫৮৬৭৭,৫৯২২২)','11/20-21(তেজগাঁও শি/এ-৭৯০৯,তেজগাঁও-২৫৫২)','03/18-19(তেজগাঁও-203,215,616,636,852,854,855,913,1952-1998,2022-2061,5448,5706,5723,840,841,কাওরান-৬৪৫)','13/18-19(বড় আশুলিয়া-৩১০৭,৩১১০,৩১১১,৩৩০২,৩৩১১,দক্ষিণখান-৭৬৭৮,৭৬৯৭,৩৩১৯,৩২৮৭,৩২৮৮)','10/19-20(বড় আশুলিয়া-৩২৯,৩৩০,৩৩২,৩৬৩-৩৬৬,৩৭৩,৪৬৫,৪৬৭,৪৭০,৪৭৯,৪৮৪,৪৮৫,৩০৭,৩৩৩,৩৩৪,৫০৮,৫০৫,৩৩১,৪৫৯,৫৭০,৫৮৬)','09/2019-20(দিয়াবাড়ী)','07/2022-23(ব্রাহ্মণচিরণ-৯০৭,যাত্রাবাড়ি-৪৫৩,৭০১)','01/2023-24(বলিয়ারপুর-৩৭৭৪,৪০৩৯,৪০৪০,৪১৪৮,৪১৫৯)','08/22-23(ভাটারা-১৩৩২৪,৮৯০৪,জোয়ার সাহারা-৫৯৭৬৯,৫৭৮৯৬)','03/2023-24(সেনপাড়া পর্বতা-৩৫০০৭,৩৮২৩২,গুলশান-৩৭৬৫)','05/22-23(নন্দীপাড়া-৪৮৮৬,৪৯০৪,৪৯০৫,১০৬৩৬,১৩১১১,১৩১৯১,৪৮৫৯,৮২৪০)','08/23-24(ভাটারা-৭৮০৫,১২৪৫৫,১৩৩২৭,জোয়ার সাহারা-৫৭৭৩৬)','18/2023-24(বড় আশুলিয়া-৮৮৯,২১২৬,৪৩০২,৫০২৮,৫৩২৫,জিরাবো-২০৭,২৭৩,তৈয়বপুর-৪৫৫২,৫৯০৭,দিয়াখালী-১০৪০৯,আব্দুল্লাহপুর-১৯,চকবাসাইদ-২৪,৩৪)','03/24-25(উত্তর কাউন্দিয়া-৬১৫৬,বেগুনবাড়ী-১৫৮,১৭২,বনানী-৮৬৭)','12/23-24(ডাউটিয়া-৭৯৫,নান্দেশ্বরী-৫৮,বাউখন্ড-২৪৭৪,উত্তর নওহাট্টা-১২৫-১২৯,ভালুম-৪৭০৩-৪৭৩০,ছোটকালামপুর-১০৯৬,১০৯৭,১১২০-১১২৬)','15/23-24(দ্বিমুখা-৯২,৯৩,১২৫,২৬৮,৩১০,৩১৭,৩৪০,৩৭৭-৩৭৮,৩৯৭)','11/24-25(মূল ফাইল)']
+  },
+  mouzas:['চান্দুলিয়া','কান্দিবলিয়ারপুর','কোন্ডা','উত্তর ব্রাহ্মণচিরণ','শুভাঢ্যা','সেনপাড়া পর্বতা','তেজগাঁও','কাওরান','বড় আশুলিয়া','দক্ষিণখান','দিয়াবাড়ী','বিলামালিয়া','ভাটারা','জোয়ার সাহারা','বলিয়ারপুর','আমুলিয়া','বালুধিতপুর','কায়েতপাড়া','নড়াইবাগ','দেইল্যা','কামারঘোপ','সোনাকান্দা','সারুলিয়া','ঘোপদক্ষিণ','নন্দীপাড়া','বনানী','উত্তর কাউন্দিয়া','বেগুনবাড়ী','গুলশান','জিরাবো','তৈয়বপুর','আব্দুল্লাহপুর','দিয়াখালী','চকবাসাইদ','ব্রাহ্মণচিরণ','ডাউটিয়া','নান্দেশ্বরী','বাউখন্ড','উত্তর নওহাট্টা','ভালুম','ছোটকালামপুর','দ্বিমুখা']
+ },
+];
+const BASE_ASSIGN4 = [
+ {id:'a4-1',br:4,kanungo:'মোঃ জাকির হোসেন',surveyor:'মোঃ রমজান আলী',backup:'মোঃ শাহ আলম (সার্ভেয়ার)',
+  cases:{
+   '1948':['32/60-61','59/60-61','60/60-61','71/60-61','101/60-61','03/61-62','141/61-62','59/63-64','22/63-64','43/64-65','90/64-65','30/65-66','90/65-66','02/69-70','77/56-57','40/57-58','43/57-58','37/59-60','11/59-60','33/59-60','50/64-65','05/72-73','13/59-60','125/62-63','02/60-61','07/60-61','33/60-61','103/60-61','27/67-68','27/69-70','09/70-71','88/60-61','130/60-61','115/61-62','01/61-62','38/66-67','91/66-67','159/61-62'],
+   '1982':['03/87-88','04/87-88','12/87-88','15/89-99','68/89-90','12/2007-08','09/2009-10','10/2009-10','02/11-12','08/12-13','06/96-97','13/97-98','15/98-99','11/2000-01'],
+   '2017':['09/18-19','02/2022-23','16/2020-21']},mouzas:[]},
+ {id:'a4-2',br:4,kanungo:'মোঃ জাকির হোসেন',surveyor:'মোঃ শাহ আলম',backup:'মোঃ রমজান আলী (সার্ভেয়ার)',
+  cases:{
+   '1948':['03/48-49','05/48-49','34/49-50','04/50-51','12/50-51','13/59-60','42/69-70','12/72-73','27/72-73','07/73-74','54/53-54','86/61-62','88/61-62','46/62-63','185/62-63'],
+   '1982':['30/81-82','01/82-83','38/82-83','06/99-2000','06/10-11','07/15-16','06/92-93','03/93-94','10/93-94','04/12-13','07/2015-16','16/2015-16','11/2000-01','15/2000-01','08/2003-04','12/03-04','06/2015-16'],
+   '2017':['13/2017-18','14/2017-18','09/2020-21','08/21-22','06/2019-20','08/2019-20']},mouzas:[]},
+ {id:'a4-3',br:4,kanungo:'মোঃ মোশারেফ হোসেন',surveyor:'মোঃ মামুন হোসেন',backup:'শংকর কুমার সরকার (সার্ভেয়ার)',
+  cases:{
+   '1948':['38(এ)/51-52','44/51-52','29/53-54','42/53-54','10/55-56','37/74-75','16/76-77','30/67-68','74/76-77','01/77-78','18/53-54','27/53-54','44/53-54','10/54-55','73/56-57'],
+   '1982':['48/82-83','48/83-84','54/83-84','10/16-17','13/2016-17','01/96-97'],
+   '2017':['17/17-18','08/18-19','16/2020-21','13/2021-22']},mouzas:[]},
+ {id:'a4-4',br:4,kanungo:'মোঃ জাকির হোসেন',surveyor:'শংকর কুমার সরকার',backup:'মোঃ মামুন হোসেন (সার্ভেয়ার)',
+  cases:{
+   '1948':['122/60-61','91/57-58','74/56-57','16/58-59','30/58-59','26/59-60','15/60-61','39/77-78','51/77-78','54/77-78','40/78-79','05/78-79','04/79-80','02/67-68','99/67-68','02/68-69','181/82-83','08/87-88','186/62-63','30/63-64','59/63-64','41/64-65','66A/65-66','43/65-66'],
+   '1982':['55/83-84','05/17-18','01/82-83','04/2016-17','10/16-17','01/2017-18','02/2017-18','03/2017-18','04/17-18','05/17-18','06/2017-18','07/2017-18','08/2017-18','09/2017-18','10/17-18'],
+   '2017':['09/2021-22','18/2017-18','04/2021-22','15/2017-18','01/2020-21','20/2017-18']},mouzas:[]},
+ {id:'a4-5',br:4,kanungo:'মোঃ মোশারেফ হোসেন',surveyor:'মোঃ আবুল খায়ের',backup:'শংকর কুমার সরকার (সার্ভেয়ার)',
+  cases:{
+   '1948':['06/48-49','18/81-82','38/83-84','07/48-49','11/48-49','31/49-50','05/51-52','46/51-52','67/51-52','66/65-66','66B/65-66','110/65-66','26/66-67','92/67-68','11/10-11','14/10-11','11/2011-12','16/72-73','17/74-75','30/76-77','66/76-77','04/77-78','12/78-79','02/80-81','05/80-81','34/83-84','16/85-86'],
+   '1982':['02/2007-08','09/16-17','49/82-83','21/84-85','08/07-08','14/10-11','48/83-84','29/86-87','05/99-2000'],
+   '2017':['02/21-22','16/2017-18','05/2019-20','19/2017-18','২৫০ শয্যা পুলিশ হাসপাতাল']},mouzas:[]},
+];
+
+
+const BASE_CASES = [
+  {id:'lc-1',num:'১১/১৭-১৮',name:'ঢাকা-খুলনা মহাসড়ক যাত্রাবাড়ী থেকে মাওয়া পর্যন্ত ৪ লেনে উন্নয়ন',status:'gazette',gdate:'০৫/১২/২০১৯',pct:67,total:'৪৩১,১৬,২৯,৫৫৫/-'},
+  {id:'lc-2',num:'২১/১৭-১৮',name:'ঢাকা ম্যাস র‌্যাপিড ট্রানজিট (এমআরটি লাইন-৬) ডিএমআরটিডিপি',status:'gazette',gdate:'০২.০৫.২০২২',pct:61,total:'১৩,৫৫,৮৬,৬৮০/-'},
+  {id:'lc-3',num:'০৩/১৮-১৯',name:'সাপোর্ট টু ঢাকা এলিভেটেড এক্সপ্রেসওয়ে পিপিপি',status:'gazette',gdate:'০৮.০৪.২০২১',pct:66,total:'৫৩৫,৭৭,৭৩,২৪৭/-'},
+  {id:'lc-4',num:'১২/১৮-১৯',name:'মিরপুর ডিওএইচএস গেট-২ থেকে মিরপুর-১২ মহাসড়ক উন্নয়ন',status:'gazette',gdate:'২৩.০৩.২০২২',pct:92,total:'৭,৮৮,৭৪,৪৯৫/-'},
+  {id:'lc-5',num:'১৩/১৮-১৯',name:'ঢাকা-আশুলিয়া এলিভেটেড এক্সপ্রেসওয়ে নির্মাণ প্রকল্প (১ম)',status:'gazette',gdate:'১৫.০৮.২০২৪',pct:59,total:'৮১৮,১৭,৮০,৭৫৫/-'},
+  {id:'lc-6',num:'০২/১৯-২০',name:'সড়ক ও জনপথ অধিদপ্তরের প্রধান কার্যালয়ের ২য় এ্যাপ্রোচ সড়ক',status:'gazette',gdate:'২২.১২.২০২২',pct:58,total:'২৩,৮১,২৪,৬৩২/-'},
+  {id:'lc-7',num:'০৪/১৯-২০',name:'মানিকগঞ্জ গোলড়া-সাটুরিয়া সড়ক উন্নয়ন',status:'gazette',gdate:'২২.১২.২০২২',pct:92,total:'৩,২৭,২২,৬১২/-'},
+  {id:'lc-8',num:'০৯/১৯-২০',name:'এমআরটি লাইন-৬ উত্তরা নর্থ স্টেশন কার পার্কিং প্রকল্প',status:'gazette',gdate:'২১.০৪.২০২২',pct:31,total:'১৭,৮৮,২৭,৫৯৪/-'},
+  {id:'lc-9',num:'১০/১৯-২০',name:'ঢাকা-আশুলিয়া এলিভেটেড এক্সপ্রেসওয়ে (২য় পর্যায়)',status:'gazette',gdate:'২০.০৩.২০২৫',pct:83,total:'১১৭০,৯৮,৫০,৮৯৪/-'},
+  {id:'lc-10',num:'১১/২০-২১',name:'ঢাকা এলিভেটেড এক্সপ্রেসওয়ে পিপিপি (ব্যক্তি মালিকানাধীন)',status:'gazette',gdate:'৩১.০৩.২০২২',pct:34,total:'১১৯,৮১,৫৫,২৫৫/-'},
+  {id:'lc-11',num:'১৭/২০-২১',name:'ঢাকা এমআরটি লাইন-৫ নর্দান রুট',status:'gazette',gdate:'২০.১০.২০২২',pct:77,total:'৯৩৪,৮৪,১৬,৭৯৭/-'},
+  {id:'lc-12',num:'১৮/২০-২১',name:'এমআরটি লাইন-৬ উত্তরা নর্থ কার পার্কিং (২য়)',status:'gazette',gdate:'১৭.১১.২০২২',pct:54,total:'২৮১,৪০,৪৬,৭৬৩/-'},
+  {id:'lc-13',num:'০১/২১-২২',name:'ঢাকা এলিভেটেড এক্সপ্রেসওয়ে পিপিপি (ট্রাঞ্চ-১)',status:'gazette',gdate:'২৪/০৮/২০২৩',pct:74,total:'২৭২,৮৬,৬৯,২৬১/-'},
+  {id:'lc-14',num:'০৩/২১-২২',name:'ঢাকা-খুলনা মহাসড়ক N-8 (২৪ ইঞ্জিনিয়ার কনস্ট্রাকশন ব্রিগেড)',status:'gazette',gdate:'২০.০৪.২০২৩',pct:60,total:'৬৭,৪৮,৩৯,২৯৭/-'},
+  {id:'lc-15',num:'০৮/২১-২২',name:'ঢাকা এমআরটি লাইন-০৬ (সেনপাড়া পর্বতা)',status:'gazette',gdate:'১০.০৮.২০২৩',pct:93,total:'২৭৮,৫১,০৩,২৭৬/-'},
+  {id:'lc-16',num:'১০/২১-২২',name:'যাত্রাবাড়ী-মেয়র হানিফ ফ্লাইওভার-ডেমরা মহাসড়ক ৪ লেন',status:'gazette',gdate:'২৩/১১/২০২৩',pct:97,total:'৮,৪৬,৯৩,২০২/-'},
+  {id:'lc-17',num:'১৪/২১-২২',name:'ঢাকা এমআরটি লাইন-০১ (বাড্ডা)',status:'gazette',gdate:'২৩/১০/২০২৫',pct:20,total:'৫,০৬,৬৫,৬৬০/-'},
+  {id:'lc-18',num:'১২/২১-২২',name:'কেরানীগঞ্জ-মুন্সিগঞ্জ হাসাড়া মহাসড়ক Z-8203',status:'gazette',gdate:'১৫.০৮.২০২৪',pct:70,total:'৪৬,১৩,০৫,৮৮৩/-'},
+  {id:'lc-19',num:'১৫/২১-২২',name:'হাতিরঝিল-রামপুরা-বনশ্রী-আমুলিয়া-ডেমরা মহাসড়ক ৪ লেন PPP',status:'pending',gdate:'গেজেটের জন্য প্রেরিত',pct:33,total:'১৬,৭১,৮৪,৪১১/-'},
+  {id:'lc-20',num:'১৬/২১-২২',name:'ঢাকা এমআরটি লাইন-০৬ (২য়)',status:'gazette',gdate:'২৩/১০/২০২৫',pct:13,total:'৫,৩১,৩৩,৪১৬/-'},
+  {id:'lc-21',num:'০৪/২২-২৩',name:'হাতিরঝিল-আমুলিয়া-ডেমরা ৪ লেন',status:'progress',gdate:'তহবিল প্রাপ্তি সাপেক্ষ',pct:54,total:'৯০৭,৮৪,৩৬,৮১৯/-'},
+  {id:'lc-22',num:'০৫/২২-২৩',name:'হাতিরঝিল-আমুলিয়া-ডেমরা PPP (২য়)',status:'pending',gdate:'গেজেটের জন্য প্রেরিত',pct:65,total:'২৫৩,৪৬,৫৪,৮৬৯/-'},
+  {id:'lc-23',num:'০৬/২২-২৩',name:'এমআরটি লাইন-৫ হেমায়েতপুর-বলিয়ারপুর উড়াল অংশ',status:'gazette',gdate:'১৯/১২/২০২৪',pct:55,total:'৬০,৯৬,৩৭,৩৬২/-'},
+  {id:'lc-24',num:'০৭/২২-২৩',name:'ঢাকা এলিভেটেড এক্সপ্রেসওয়ে পিপিপি ট্রাঞ্চ-৩',status:'gazette',gdate:'০৫.০৯.২০২৪',pct:21,total:'২৫,২৯,২৮,২২৯/-'},
+  {id:'lc-25',num:'০১/২৩-২৪',name:'এমআরটি লাইন-৫ বলিয়ারপুর-আমিনবাজার উড়াল অংশ (১ম)',status:'gazette',gdate:'১৬.০১.২০২৫',pct:75,total:'১০৬,১৮,৯৭,৫৭৯/-'},
+  {id:'lc-26',num:'০২/২৩-২৪',name:'এমআরটি লাইন-৫ ঢাকা উত্তর সিটি মেট্রো স্টেশন (১ম)',status:'gazette',gdate:'১৬/১০/২০২৫',pct:34,total:'৬৩,১৫,০০,৭৫৮/-'},
+  {id:'lc-27',num:'০৩/২৩-২৪',name:'এমআরটি লাইন-৫ ঢাকা উত্তর সিটি মেট্রো স্টেশন (২য়)',status:'gazette',gdate:'১৬/১০/২০২৫',pct:12,total:'১১৭,১৬,৮৭,৩৩৭/-'},
+  {id:'lc-28',num:'০৭/২৩-২৪',name:'এমআরটি লাইন-৫ নতুনবাজার ভূগর্ভস্থ ও ভাটারা উড়াল স্টেশন',status:'progress',gdate:'ক্ষতিপূরণ চলমান',pct:35,total:'৩৪০,১৯,০৭,৭৪২/-'},
+  {id:'lc-29',num:'০৮/২৩-২৪',name:'এমআরটি লাইন-১ নদ্দা-নতুনবাজার উত্তর বাড্ডা স্টেশন',status:'gazette',gdate:'',pct:63,total:'৪৪১,২৩,৫২,৬৭৭/-'},
+  {id:'lc-30',num:'০৯/২৩-২৪',name:'এমআরটি লাইন-৬ উত্তরা উত্তর মেট্রো Station Plaza',status:'stayed',gdate:'রিট মামলা চলমান',pct:50,total:'৬২৭,১৭,৪৭,৬০৩/-'},
+  {id:'lc-31',num:'১০/২৩-২৪',name:'এমআরটি লাইন-৫ বলিয়ারপুর-আমিনবাজার উড়াল অংশ (২য়)',status:'gazette',gdate:'১৬.০১.২০২৫',pct:71,total:'৬,৮৮,৯০,৪৩৭/-'},
+  {id:'lc-32',num:'১২/২৩-২৪',name:'টাঙ্গাইল-দেলদুয়ার-লাউহাটি-সাটুরিয়া-কামালপুর আঞ্চলিক মহাসড়ক',status:'pending',gdate:'৭ ধারার নোটিশ জারি',pct:0,total:''},
+  {id:'lc-33',num:'১৩/২৩-২৪',name:'মানিকগঞ্জ মাওনা-কালিয়াকৈর-ধামরাই-নবীনগর মহাসড়ক বাঁক সরলীকরণ',status:'pending',gdate:'বাস্তবায়ন যাচাইধীন',pct:0,total:''},
+  {id:'lc-34',num:'১৫/২৩-২৪',name:'টাঙ্গাইল-দেলদুয়ার-লাউহাটি সড়ক মহাসড়ক উন্নীতকরণ (২য়)',status:'progress',gdate:'প্রাক্কলন চলমান',pct:0,total:''},
+  {id:'lc-35',num:'১৭/২৩-২৪',name:'এমআরটি লাইন-১ কমলাপুর, রাজারবাগ, মালিবাগ, রামপুরা পাতাল স্টেশন',status:'pending',gdate:'প্রাক্কলন প্রেরিত',pct:0,total:''},
+  {id:'lc-36',num:'১৮/২৩-২৪',name:'ঢাকা-আশুলিয়া এলিভেটেড এক্সপ্রেসওয়ে ৩য় ধাপ',status:'gazette',gdate:'০২.১০.২০২৫',pct:61,total:'৪৬৬,৬৮,৪৫,৭৭৭/-'},
+  {id:'lc-37',num:'০৩/২৪-২৫',name:'এমআরটি লাইন-৫ বলিয়ারপুর-আমিনবাজার, বনানী ও গুলশান-২ পাতাল স্টেশন',status:'progress',gdate:'ক্ষতিপূরণ চলমান',pct:7,total:'১০৬,৩৪,৫৪,৪৯১/-'},
+  {id:'lc-38',num:'০৪/২৪-২৫',name:'এমআরটি লাইন-৬ কাওরান বাজার, শাহবাগ ও সচিবালয় স্টেশন',status:'progress',gdate:'প্রাক্কলন চলমান',pct:0,total:''},
+  {id:'lc-39',num:'০৫/২৪-২৫',name:'জরাজীর্ণ বেইলি সেতু প্রতিস্থাপন (ঢাকা জোন)',status:'progress',gdate:'প্রাক্কলন চলমান',pct:0,total:''},
+  {id:'lc-40',num:'০৭/২৪-২৫',name:'এমআরটি লাইন-১ আফতাবনগর ও বাড্ডা পাতাল স্টেশন',status:'pending',gdate:'০৭ ধারার নোটিশ প্রক্রিয়াধীন',pct:0,total:''},
+  {id:'lc-41',num:'০৮/২৪-২৫',name:'টাঙ্গাইল-দেলদুয়ার-সাটুরিয়া-কামালপুর মহাসড়ক উন্নীতকরণ',status:'progress',gdate:'যৌথ তদন্ত সম্পন্ন',pct:0,total:''},
+  {id:'lc-42',num:'০৯/২৪-২৫',name:'এমআরটি লাইন-১ উত্তর ব্রাহ্মণচিরণ Ventilation Duct-5',status:'progress',gdate:'প্রাক্কলন চলমান',pct:0,total:''},
+  {id:'lc-43',num:'১১/২৪-২৫',name:'মুন্সীগঞ্জ রামেরকান্দা-লাকিরচর সংযোগ সড়ক R-823 (কেরানীগঞ্জ)',status:'pending',gdate:'৪ ধারার নোটিশ জারি',pct:0,total:''},
+  {id:'lc-44',num:'০৪/২৫-২৬',name:'এমআরটি লাইন-৫ বেগুনবাড়ী মৌজায় ভূমি অধিগ্রহণ',status:'progress',gdate:'প্রাক্কলন চলমান',pct:0,total:''},
+];
+
+
+// ══════════════════ STATE ══════════════════
+const LS={
+  g(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch{return null}},
+  s(k,v){localStorage.setItem(k,JSON.stringify(v))}
+};
+let staff3,staff4,assign3,assign4,cases,relog;
+function uid(){return 'u'+Date.now()+Math.random().toString(36).slice(2,6)}
+
+function loadData(){
+  staff3=LS.g('v2_s3')||BASE_STAFF3.map(x=>({...x}));
+  staff4=LS.g('v2_s4')||BASE_STAFF4.map(x=>({...x}));
+  assign3=LS.g('v2_a3')||BASE_ASSIGN3.map(a=>({...a,cases:JSON.parse(JSON.stringify(a.cases)),mouzas:[...(a.mouzas||[])]}));
+  assign4=LS.g('v2_a4')||BASE_ASSIGN4.map(a=>({...a,cases:JSON.parse(JSON.stringify(a.cases)),mouzas:[...(a.mouzas||[])]}));
+  cases=LS.g('v2_c')||BASE_CASES.map(x=>({...x}));
+  relog=LS.g('v2_rl')||[];
+}
+function save(){LS.s('v2_s3',staff3);LS.s('v2_s4',staff4);LS.s('v2_a3',assign3);LS.s('v2_a4',assign4);LS.s('v2_c',cases);LS.s('v2_rl',relog);}
+
+// ══════════════════ NORMALIZE ══════════════════
+// Converts Bengali digits → Arabic, strips spaces & punctuation
+// So ৭৪৫১ and 7451 both match
+function bn2en(s){
+  return String(s||'').replace(/[০-৯]/g,d=>'০১২৩৪৫৬৭৮৯'.indexOf(d));
+}
+function norm(s){
+  const a=String(s||'').toLowerCase();
+  // strip spaces, commas, hyphens, parentheses, /, . 
+  return bn2en(a).replace(/[\s,،،\-\/\.\(\)]/g,'');
+}
+
+// ══════════════════ SEARCH ══════════════════
+function doSearch(raw){
+  const q=raw.trim();
+  const sec=document.getElementById('sr');
+  const lst=document.getElementById('srl');
+  const cnt=document.getElementById('src');
+  const clr=document.querySelector('.sw-clr');
+  if(clr)clr.style.display=q?'block':'none';
+  if(!q){sec.style.display='none';return;}
+  sec.style.display='block';
+  const qn=norm(q);
+  const results=[];
+
+  function getP(name,sl){
+    const f=sl.find(s=>norm(s.name).includes(norm(name))||s.name.includes(name));
+    return f?{p:f.phone||null,p2:f.phone2||null}:{p:null,p2:null};
+  }
+
+  function syncCase(cstr){
+    // Extract case number patterns from cstr and match against cases list
+    // Match patterns like XX/YY-YY at start of string
+    const m=cstr.match(/^(\d+\/\d{2}-\d{2,4}|\d+\/\d{4}-\d{2,4}|\d+\/\d{2,4})/);
+    if(!m)return null;
+    const cnum=norm(m[1]);
+    return cases.find(c=>norm(c.num)===cnum||norm(c.num).includes(cnum)||cnum.includes(norm(c.num)));
+  }
+
+  function searchAssigns(al,brLabel,sl){
+    al.forEach(a=>{
+      const kp=getP(a.kanungo,sl);
+      const sp=getP(a.surveyor,sl);
+      const nm=norm(a.kanungo).includes(qn)||norm(a.surveyor).includes(qn)||norm(a.backup||'').includes(qn);
+      const pm=[kp.p,kp.p2,sp.p,sp.p2].filter(Boolean).some(p=>bn2en(p).includes(qn));
+
+      Object.entries(a.cases||{}).forEach(([law,cl])=>{
+        (cl||[]).forEach(cstr=>{
+          const cn=norm(cstr);
+          const cm=cn.includes(qn);
+          if(cm||nm||pm){
+            const synced=syncCase(cstr);
+            results.push({br:brLabel,cstr,law,k:a.kanungo,kp:kp.p,kp2:kp.p2,s:a.surveyor,sp:sp.p,bk:a.backup||'',mt:pm&&!cm?'ফোনে মিল':nm&&!cm?'নামে মিল':'কেস/দাগে মিল',synced});
+          }
+        });
+      });
+      (a.mouzas||[]).forEach(m=>{
+        if(norm(m).includes(qn)){
+          results.push({br:brLabel,cstr:'মৌজা: '+m,law:'mouza',k:a.kanungo,kp:kp.p,kp2:kp.p2,s:a.surveyor,sp:sp.p,bk:a.backup||'',mt:'মৌজায় মিল',synced:null});
+        }
+      });
+    });
+  }
+
+  searchAssigns(assign3,'শাখা-৩',staff3);
+  searchAssigns(assign4,'শাখা-৪',staff4);
+
+  // Staff search
+  [...staff3,...staff4].forEach(s=>{
+    if(norm(s.name).includes(qn)||norm(s.role).includes(qn)||(s.phone&&(bn2en(s.phone).includes(qn)||s.phone.includes(q)))||(s.phone2&&(bn2en(s.phone2).includes(qn)||s.phone2.includes(q)))){
+      results.push({br:'শাখা-'+s.br,cstr:'কর্মী',law:'staff',k:s.name,kp:s.phone||null,kp2:s.phone2||null,s:s.role,sp:null,bk:s.backup||'',mt:'কর্মীতে মিল',isStaff:true,sd:s,synced:null});
+    }
+  });
+
+  // Cases search
+  cases.forEach(c=>{
+    if(norm(c.num).includes(qn)||norm(c.name).includes(qn)){
+      results.push({br:'এল.এ কেস তালিকা',cstr:c.num,law:'lacase',k:c.name,kp:null,kp2:null,s:'',sp:null,bk:'',mt:'কেস তালিকায়',isCaseOnly:true,cd:c,synced:null});
+    }
+  });
+
+  cnt.textContent=results.length+' টি';
+  if(!results.length){
+    lst.innerHTML=`<div class="es"><div class="ic">🔍</div><p>"${q}" এর জন্য কোনো ফলাফল নেই।<br>বাংলা বা ইংরেজি — কেস নং, দাগ নং, মৌজা, নাম বা ফোন দিন।</p></div>`;
+    return;
+  }
+
+  // Deduplicate
+  const seen=new Set();
+  const uniq=results.filter(r=>{
+    const k=r.br+r.cstr+r.k+r.s;
+    if(seen.has(k))return false;seen.add(k);return true;
+  });
+
+  const lm={'1948':'১৯৪৮ আইন','1982':'১৯৮২ আইন','2017':'২০১৭ আইন','mouza':'মৌজা','staff':'কর্মী','lacase':'কেস তালিকা'};
+
+  function hi(t,q){if(!q)return t;const e=q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');return String(t||'').replace(new RegExp(`(${e})`,'gi'),'<mark>$1</mark>');}
+
+  function stBadge(s){return{gazette:'<span class="sbadge sbg">গেজেট প্রকাশিত</span>',progress:'<span class="sbadge sbp">চলমান</span>',stayed:'<span class="sbadge sbs">স্থগিত</span>',pending:'<span class="sbadge sbn">প্রক্রিয়াধীন</span>'}[s]||''}
+
+  function syncedBlock(sc){
+    if(!sc)return'';
+    return`<div class="synced-case">
+      <div class="stitle">📎 সংযুক্ত এল.এ কেস: ${sc.num}</div>
+      <div class="srow">
+        <span>${sc.name}</span>
+        <span>${stBadge(sc.status)}</span>
+        ${sc.gdate?`<span>গেজেট: <strong>${sc.gdate}</strong></span>`:''}
+        ${sc.pct?`<span>ক্ষতিপূরণ: <strong>${sc.pct}%</strong></span>`:''}
+        ${sc.total?`<span>${sc.total}</span>`:''}
+      </div>
+    </div>`;
+  }
+
+  lst.innerHTML=uniq.slice(0,60).map(r=>{
+    if(r.isCaseOnly){
+      const c=r.cd;
+      return`<div class="rc"><div class="rch"><span class="rct">এল.এ কেস</span><span class="rcn">${hi(c.num,q)}</span><span class="rcm">কেস তালিকায়</span></div>
+        <div class="rcb"><div style="font-size:13.5px;font-weight:700;margin-bottom:6px">${hi(c.name,q)}</div>
+        <div class="dr">${stBadge(c.status)}<span>গেজেট: ${c.gdate||'—'}</span>${c.pct?`<span>ক্ষতিপূরণ: <strong>${c.pct}%</strong></span>`:''}</div></div></div>`;
+    }
+    if(r.isStaff){
+      const s=r.sd;
+      return`<div class="rc"><div class="rch"><span class="rct">${r.br}</span><span class="rcn">${hi(s.name,q)}</span><span class="rcm">কর্মী</span></div>
+        <div class="rcb"><div class="rcc"><div class="rcp"><div class="rcpr">${s.role}</div><div class="rcpn">${hi(s.name,q)}</div></div></div>
+        <div class="ph-row">${s.phone?`<a class="pbtn g" href="tel:${s.phone}">📞 ${hi(s.phone,q)}</a>`:''}${s.phone2?`<a class="pbtn p" href="tel:${s.phone2}">📞 ${hi(s.phone2,q)}</a>`:''}</div>
+        <div class="dr"><span>📅 ${s.join} · ${s.dur}</span>${s.backup?`<span>🔄 প্রতিকল্প: <strong>${s.backup}</strong></span>`:''}</div></div></div>`;
+    }
+    const phones=[];
+    if(r.kp)phones.push(`<a class="pbtn g" href="tel:${r.kp}">📞 কানুনগো: ${hi(r.kp,q)}</a>`);
+    if(r.kp2)phones.push(`<a class="pbtn p" href="tel:${r.kp2}">📞 ${hi(r.kp2,q)}</a>`);
+    if(r.sp)phones.push(`<a class="pbtn p" href="tel:${r.sp}">📞 সার্ভেয়ার: ${hi(r.sp,q)}</a>`);
+    return`<div class="rc"><div class="rch"><span class="rct">${r.br}</span><span class="rcn">${hi(r.cstr,q)}</span><span class="rcm">${r.mt} · ${lm[r.law]||r.law}</span></div>
+      <div class="rcb">
+        <div class="rcc">
+          <div class="rcp"><div class="rcpr">কানুনগো</div><div class="rcpn">${hi(r.k,q)}</div></div>
+          ${r.s?`<span class="rca">→</span><div class="rcp"><div class="rcpr">সার্ভেয়ার</div><div class="rcpn">${hi(r.s,q)}</div></div>`:''}
+        </div>
+        <div class="ph-row">${phones.join('')}</div>
+        <div class="dr"><span>🔄 প্রতিকল্প: <strong>${r.bk||'—'}</strong></span></div>
+        ${syncedBlock(r.synced)}
+      </div></div>`;
+  }).join('');
+  if(uniq.length>60)lst.innerHTML+=`<div style="text-align:center;padding:10px;font-size:13px;color:var(--mu)">আরও ${uniq.length-60} টি। আরও নির্দিষ্ট করুন।</div>`;
+}
+
+function clearSearch(){const i=document.getElementById('gs');i.value='';doSearch('');i.focus();}
+
+// ══════════════════ TABS ══════════════════
+// Store scroll per tab; don't destroy content
+let activeTab='tab3';
+function switchTab(id,btn){
+  document.querySelectorAll('.tc').forEach(t=>t.style.display='none');
+  document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('act'));
+  document.getElementById(id).style.display='block';
+  btn.classList.add('act');
+  activeTab=id;
+}
+
+// ══════════════════ RENDER STAFF ══════════════════
+function rcls(r){return r==='কানুনগো'?'k':r==='সার্ভেয়ার'?'s':r==='অফিস সহকারী'?'o':'c';}
+function renderStaff(sl,cid){
+  const el=document.getElementById(cid);
+  if(!sl.length){el.innerHTML='<div class="es"><div class="ic">👤</div><p>কোনো কর্মী নেই</p></div>';return;}
+  el.innerHTML=sl.map(s=>{
+    const rc=rcls(s.role);
+    return`<div class="sc">
+      <div class="s-acts">
+        <button class="s-act" onclick="openEditStaff('${s.id}')">✏️</button>
+        <button class="s-act del" onclick="delStaff('${s.id}')">🗑️</button>
+      </div>
+      <div class="sct">
+        <div class="av av-${rc}">${s.name.trim()[0]}</div>
+        <div><div class="sn">${s.name}${s.note?` <small style="color:var(--mu)">${s.note}</small>`:''}</div>
+        <span class="sr2 r-${rc}">${s.role}</span></div>
+      </div>
+      <div class="sm">
+        ${s.phone?`<a class="sp" href="tel:${s.phone}">📞 ${s.phone}</a>`:''}
+        ${s.phone2?`<a class="sp" href="tel:${s.phone2}" style="color:var(--pur)">📞 ${s.phone2}</a>`:''}
+        <div class="sj">📅 ${s.join} · ${s.dur}</div>
+      </div>
+      ${s.backup?`<div class="sbk">প্রতিকল্প: <strong>${s.backup}</strong></div>`:''}
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════ RENDER ASSIGNMENTS ══════════════════
+const LL={'1948':'ll48','1982':'ll82','2017':'ll17'};
+const LN={'1948':'১৯৪৮ আইন','1982':'১৯৮২ আইন','2017':'২০১৭ আইন'};
+function renderAssigns(al,cid){
+  const el=document.getElementById(cid);
+  if(!al.length){el.innerHTML='<div class="es"><div class="ic">📋</div><p>কোনো এসাইনমেন্ট নেই</p></div>';return;}
+  el.innerHTML=al.map(a=>{
+    const ch=Object.entries(a.cases||{}).map(([law,cl])=>{
+      if(!cl||!cl.length)return'';
+      return`<div class="lg"><span class="ll ${LL[law]}">${LN[law]}</span>
+        <div class="cts">${cl.map(c=>`<span class="ct">${c}</span>`).join('')}</div></div>`;
+    }).join('');
+    const mh=(a.mouzas||[]).length?`<div class="lg"><span class="ll llmz">মৌজা সমূহ</span>
+      <div class="cts">${a.mouzas.map(m=>`<span class="ct">${m}</span>`).join('')}</div></div>`:'';
+    return`<div class="ab">
+      <div class="abh" onclick="togAB(this)">
+        <div class="abhn">
+          <div class="abp">কানুনগো: ${a.kanungo} &nbsp;|&nbsp; সার্ভেয়ার: ${a.surveyor}</div>
+          <div class="abs2">প্রতিকল্প: ${a.backup}</div>
+        </div>
+        <div class="ab-acts" onclick="event.stopPropagation()">
+          <button class="ab-act" onclick="openEditAssign('${a.id}')">✏️ সম্পাদনা</button>
+          <button class="ab-act del" onclick="delAssign('${a.id}')">🗑️</button>
+        </div>
+        <span class="abtg">▾</span>
+      </div>
+      <div class="abb">${ch}${mh}</div>
+    </div>`;
+  }).join('');
+}
+function togAB(h){const b=h.nextElementSibling;const t=h.querySelector('.abtg');b.classList.toggle('op');t.classList.toggle('op');}
+
+// ══════════════════ RENDER CASES ══════════════════
+let cFilter='all';
+function stBadge2(s){return{gazette:'<span class="sbadge sbg">গেজেট প্রকাশিত</span>',progress:'<span class="sbadge sbp">চলমান</span>',stayed:'<span class="sbadge sbs">স্থগিত</span>',pending:'<span class="sbadge sbn">প্রক্রিয়াধীন</span>'}[s]||''}
+function renderCases(f){
+  if(f)cFilter=f;
+  const fd=cFilter==='all'?cases:cases.filter(c=>c.status===cFilter);
+  const tb=document.getElementById('ctb');
+  if(!fd.length){tb.innerHTML=`<tr><td colspan="6"><div class="es"><div class="ic">📭</div><p>কোনো তথ্য নেই</p></div></td></tr>`;return;}
+  tb.innerHTML=fd.map(c=>{
+    const pct=c.pct>0?`<div style="font-size:12px;font-weight:700">${c.pct}%</div><div class="cbb"><div class="cbf" style="width:${c.pct}%"></div></div>`:'—';
+    return`<tr>
+      <td class="cnc">${c.num}</td>
+      <td>${c.name}${c.note?`<br><small style="color:var(--mu)">${c.note}</small>`:''}</td>
+      <td>${stBadge2(c.status)}</td>
+      <td style="font-size:12px;color:var(--mu)">${c.gdate||'—'}</td>
+      <td><div class="cbw">${pct}${c.total?`<div style="font-size:11px;color:var(--mu)">${c.total}</div>`:''}</div></td>
+      <td style="white-space:nowrap">
+        <button onclick="openEditCase('${c.id}')" style="background:none;border:none;cursor:pointer;color:var(--mu);font-size:13px">✏️</button>
+        <button onclick="delCase('${c.id}')" style="background:none;border:none;cursor:pointer;color:var(--red);font-size:13px">🗑️</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+function filterCases(f,btn){
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act');renderCases(f);
+}
+
+// ══════════════════ REASSIGN LOG ══════════════════
+function renderLog(){
+  const el=document.getElementById('rlog');
+  if(!relog.length){el.innerHTML='<div class="es" style="padding:20px"><div class="ic">📝</div><p>কোনো লগ নেই।</p></div>';return;}
+  el.innerHTML=relog.map(r=>`<div class="log-item">
+    <div style="flex:1;line-height:1.6">
+      <strong>${r.dt}</strong> | শাখা-${r.br} |
+      <span style="color:var(--red)">${r.from}</span> → <span style="color:var(--green)">${r.to}</span> |
+      <em>${r.cs}</em> | ${r.law==='2017'?'২০১৭':r.law==='1982'?'১৯৮২':'১৯৪৮'} আইন
+      ${r.note?`| ${r.note}`:''}${r.mv!==undefined?`| <strong>${r.mv}টি স্থানান্তরিত</strong>`:''}
+    </div>
+    <button class="log-del" onclick="delLog('${r.id}')">✕</button>
+  </div>`).join('');
+}
+function delLog(id){relog=relog.filter(r=>r.id!==id);save();renderLog();}
+
+// ══════════════════ REASSIGN ══════════════════
+function popRaSelects(){
+  const br=parseInt(document.getElementById('ra-br').value);
+  const al=br===3?assign3:assign4;
+  const names=[...new Set([...al.map(a=>a.kanungo),...al.map(a=>a.surveyor)])];
+  ['ra-from','ra-to'].forEach(id=>{
+    document.getElementById(id).innerHTML=names.map(n=>`<option>${n}</option>`).join('');
+  });
+}
+
+function doReassign(){
+  const br=parseInt(document.getElementById('ra-br').value);
+  const from=document.getElementById('ra-from').value;
+  const to=document.getElementById('ra-to').value;
+  const cs=document.getElementById('ra-cs').value.trim();
+  const law=document.getElementById('ra-law').value;
+  const note=document.getElementById('ra-note').value.trim();
+  if(!cs){showToast('❗ কেস/দাগ নম্বর দিন।');return;}
+  if(from===to){showToast('❗ উৎস ও গন্তব্য আলাদা হতে হবে।');return;}
+  const items=cs.split(',').map(s=>s.trim()).filter(Boolean);
+  const al=br===3?assign3:assign4;
+  const srcA=al.find(a=>a.kanungo===from||a.surveyor===from);
+  const dstA=al.find(a=>a.kanungo===to||a.surveyor===to);
+  let mv=0;
+  items.forEach(item=>{
+    const qn=norm(item);
+    if(srcA&&srcA.cases[law]){
+      const idx=srcA.cases[law].findIndex(c=>norm(c).includes(qn));
+      if(idx>-1){
+        const [rem]=srcA.cases[law].splice(idx,1);
+        if(dstA){if(!dstA.cases[law])dstA.cases[law]=[];dstA.cases[law].push(rem+' [রি-অ্যাসাইন]');}
+        mv++;
+      }
+    }
+  });
+  relog.unshift({id:uid(),br,from,to,law,cs,note,dt:new Date().toLocaleDateString('bn-BD'),mv});
+  save();renderAll();showToast(`✅ ${mv}টি আইটেম "${to}"-কে দেওয়া হয়েছে।`);
+  document.getElementById('ra-cs').value='';
+}
+
+// ══════════════════ MODALS ══════════════════
+function oM(id){document.getElementById(id).classList.add('op');}
+function cM(id){document.getElementById(id).classList.remove('op');}
+window.addEventListener('click',e=>{if(e.target.classList.contains('mo'))e.target.classList.remove('op');});
+
+// Staff modal
+let editStaffId=null;
+function openAddStaff(br){
+  editStaffId=null;
+  document.getElementById('ms-br').value=br;
+  document.getElementById('ms-title').textContent='কর্মী যোগ — শাখা-'+br;
+  ['ms-name','ms-phone','ms-phone2','ms-join','ms-dur','ms-backup','ms-note'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('ms-role').value='সার্ভেয়ার';
+  oM('mstaff');
+}
+function openEditStaff(id){
+  const all=[...staff3,...staff4];const s=all.find(x=>x.id===id);if(!s)return;
+  editStaffId=id;
+  document.getElementById('ms-br').value=s.br;
+  document.getElementById('ms-title').textContent='কর্মী সম্পাদনা';
+  document.getElementById('ms-name').value=s.name;
+  document.getElementById('ms-role').value=s.role;
+  document.getElementById('ms-phone').value=s.phone||'';
+  document.getElementById('ms-phone2').value=s.phone2||'';
+  document.getElementById('ms-join').value=s.join||'';
+  document.getElementById('ms-dur').value=s.dur||'';
+  document.getElementById('ms-backup').value=s.backup||'';
+  document.getElementById('ms-note').value=s.note||'';
+  oM('mstaff');
+}
+function saveStaff(){
+  const br=parseInt(document.getElementById('ms-br').value);
+  const s={id:editStaffId||uid(),br,name:document.getElementById('ms-name').value.trim(),role:document.getElementById('ms-role').value,phone:document.getElementById('ms-phone').value.trim(),phone2:document.getElementById('ms-phone2').value.trim(),join:document.getElementById('ms-join').value.trim(),dur:document.getElementById('ms-dur').value.trim(),backup:document.getElementById('ms-backup').value.trim(),note:document.getElementById('ms-note').value.trim()};
+  if(!s.name){showToast('❗ নাম দিন।');return;}
+  const sl=br===3?staff3:staff4;
+  if(editStaffId){const i=sl.findIndex(x=>x.id===editStaffId);if(i>-1)sl[i]=s;else sl.push(s);}
+  else sl.push(s);
+  save();renderAll();cM('mstaff');showToast('✅ কর্মী সংরক্ষণ হয়েছে।');
+}
+function delStaff(id){
+  if(!confirm('এই কর্মীকে মুছে ফেলবেন?'))return;
+  staff3=staff3.filter(x=>x.id!==id);staff4=staff4.filter(x=>x.id!==id);
+  save();renderAll();showToast('🗑️ মুছে ফেলা হয়েছে।');
+}
+
+// Assign modal
+let editAssignId=null;
+function fillKS(br,a){
+  const sl=br===3?staff3:staff4;
+  const ks=sl.filter(s=>s.role==='কানুনগো').map(s=>s.name);
+  const ss=sl.filter(s=>s.role==='সার্ভেয়ার').map(s=>s.name);
+  document.getElementById('ma-k').innerHTML=ks.map(n=>`<option${a&&a.kanungo===n?' selected':''}>${n}</option>`).join('');
+  document.getElementById('ma-s').innerHTML=ss.map(n=>`<option${a&&a.surveyor===n?' selected':''}>${n}</option>`).join('');
+}
+function openAddAssign(br){
+  editAssignId=null;
+  document.getElementById('ma-br').value=br;
+  document.getElementById('ma-title').textContent='নতুন এসাইনমেন্ট — শাখা-'+br;
+  fillKS(br,null);
+  ['ma-bk','ma-c48','ma-c82','ma-c17','ma-mz'].forEach(id=>document.getElementById(id).value='');
+  oM('massign');
+}
+function openEditAssign(id){
+  const all=[...assign3,...assign4];const a=all.find(x=>x.id===id);if(!a)return;
+  editAssignId=id;
+  document.getElementById('ma-br').value=a.br;
+  document.getElementById('ma-title').textContent='এসাইনমেন্ট সম্পাদনা';
+  fillKS(a.br,a);
+  document.getElementById('ma-bk').value=a.backup||'';
+  document.getElementById('ma-c48').value=(a.cases['1948']||[]).join('\n');
+  document.getElementById('ma-c82').value=(a.cases['1982']||[]).join('\n');
+  document.getElementById('ma-c17').value=(a.cases['2017']||[]).join('\n');
+  document.getElementById('ma-mz').value=(a.mouzas||[]).join(', ');
+  oM('massign');
+}
+function saveAssign(){
+  const br=parseInt(document.getElementById('ma-br').value);
+  const a={id:editAssignId||uid(),br,kanungo:document.getElementById('ma-k').value,surveyor:document.getElementById('ma-s').value,backup:document.getElementById('ma-bk').value.trim(),
+    cases:{
+      '1948':document.getElementById('ma-c48').value.split('\n').map(s=>s.trim()).filter(Boolean),
+      '1982':document.getElementById('ma-c82').value.split('\n').map(s=>s.trim()).filter(Boolean),
+      '2017':document.getElementById('ma-c17').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    },
+    mouzas:document.getElementById('ma-mz').value.split(',').map(s=>s.trim()).filter(Boolean)
+  };
+  const al=br===3?assign3:assign4;
+  if(editAssignId){const i=al.findIndex(x=>x.id===editAssignId);if(i>-1)al[i]=a;else al.push(a);}
+  else al.push(a);
+  save();renderAll();cM('massign');showToast('✅ এসাইনমেন্ট সংরক্ষণ হয়েছে।');
+}
+function delAssign(id){
+  if(!confirm('এই এসাইনমেন্ট মুছে ফেলবেন?'))return;
+  assign3=assign3.filter(x=>x.id!==id);assign4=assign4.filter(x=>x.id!==id);
+  save();renderAll();showToast('🗑️ মুছে ফেলা হয়েছে।');
+}
+
+// Case modal
+let editCaseId=null;
+function openAddCase(){editCaseId=null;['mc-num','mc-name','mc-gdate','mc-pct','mc-total','mc-note'].forEach(id=>document.getElementById(id).value='');oM('mcase');}
+function openEditCase(id){
+  const c=cases.find(x=>x.id===id);if(!c)return;editCaseId=id;
+  document.getElementById('mc-num').value=c.num||'';document.getElementById('mc-name').value=c.name||'';
+  document.getElementById('mc-status').value=c.status||'gazette';document.getElementById('mc-gdate').value=c.gdate||'';
+  document.getElementById('mc-pct').value=c.pct||'';document.getElementById('mc-total').value=c.total||'';
+  document.getElementById('mc-note').value=c.note||'';oM('mcase');
+}
+function saveCase(){
+  const c={id:editCaseId||uid(),num:document.getElementById('mc-num').value.trim(),name:document.getElementById('mc-name').value.trim(),status:document.getElementById('mc-status').value,gdate:document.getElementById('mc-gdate').value.trim(),pct:parseInt(document.getElementById('mc-pct').value)||0,total:document.getElementById('mc-total').value.trim(),note:document.getElementById('mc-note').value.trim()};
+  if(!c.num||!c.name){showToast('❗ কেস নং ও নাম দিন।');return;}
+  if(editCaseId){const i=cases.findIndex(x=>x.id===editCaseId);if(i>-1)cases[i]=c;else cases.push(c);}
+  else cases.push(c);
+  save();renderCases();cM('mcase');showToast('✅ কেস সংরক্ষণ হয়েছে।');
+}
+function delCase(id){if(!confirm('মুছে ফেলবেন?'))return;cases=cases.filter(c=>c.id!==id);save();renderCases();showToast('🗑️ মুছে ফেলা হয়েছে।');}
+
+// ══════════════════ EXPORT / IMPORT ══════════════════
+function exportData(){
+  const d={staff3,staff4,assign3,assign4,cases,relog,at:new Date().toISOString()};
+  const b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);
+  a.download='LA_data_'+Date.now()+'.json';a.click();showToast('📤 রপ্তানি সম্পন্ন।');
+}
+function importData(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();r.onload=ev=>{
+    try{const d=JSON.parse(ev.target.result);
+      if(d.staff3)staff3=d.staff3;if(d.staff4)staff4=d.staff4;
+      if(d.assign3)assign3=d.assign3;if(d.assign4)assign4=d.assign4;
+      if(d.cases)cases=d.cases;if(d.relog)relog=d.relog;
+      save();renderAll();showToast('✅ ডেটা আমদানি হয়েছে।');
+    }catch{showToast('❌ ফাইল পড়তে সমস্যা।');}
+  };r.readAsText(f);
+}
+function resetAll(){if(!confirm('সমস্ত কাস্টম ডেটা মুছে যাবে। নিশ্চিত?'))return;
+  ['v2_s3','v2_s4','v2_a3','v2_a4','v2_c','v2_rl'].forEach(k=>localStorage.removeItem(k));
+  loadData();renderAll();showToast('♻️ রিসেট হয়েছে।');
+}
+
+// ══════════════════ TOAST & RENDER ALL ══════════════════
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+
+function renderAll(){
+  renderStaff(staff3,'sg3');renderStaff(staff4,'sg4');
+  renderAssigns(assign3,'as3');renderAssigns(assign4,'as4');
+  renderCases();renderLog();popRaSelects();
+}
+
+// ══════════════════ INIT ══════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  loadData();renderAll();
+  // Keep all tabs rendered, just hide/show
+  document.querySelectorAll('.tc').forEach((t,i)=>{if(i>0)t.style.display='none';});
+  document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();document.getElementById('gs').focus();}});
+});
+
+</script>
+</body>
+</html>
